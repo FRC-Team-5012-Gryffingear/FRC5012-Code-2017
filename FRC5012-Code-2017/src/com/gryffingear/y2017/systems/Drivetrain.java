@@ -1,8 +1,8 @@
 package com.gryffingear.y2017.systems;
 
 import com.gryffingear.y2017.config.Constants;
-
 import com.ctre.CANTalon;
+import edu.wpi.first.wpilibj.AnalogGyro;
 
 public class Drivetrain {
 
@@ -14,28 +14,26 @@ public class Drivetrain {
 	private CANTalon rightb = null;
 	private CANTalon rightc = null;
 
-	public Drivetrain(int la, int lb, int lc, int ra, int rb, int rc) {
+	private AnalogGyro gyro = null;
 
-		lefta = configureTalon(new CANTalon(la));
-		leftb = configureTalon(new CANTalon(lb));
-		leftc = configureTalon(new CANTalon(lc));
+	public Drivetrain(int la, int lb, int lc, int ra, int rb, int rc, int gp) {
 
-		righta = configureTalon(new CANTalon(ra));
-		rightb = configureTalon(new CANTalon(rb));
-		rightc = configureTalon(new CANTalon(rc));
-	}
+		lefta = configureTalon(new CANTalon(la), false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		leftb = configureTalon(new CANTalon(lb), false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		leftc = configureTalon(new CANTalon(lc), false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
 
-	private CANTalon configureTalon(CANTalon in) {
+		righta = configureTalon(new CANTalon(ra), false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		rightb = configureTalon(new CANTalon(rb), false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		rightc = configureTalon(new CANTalon(rc), false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
 
-		in.clearStickyFaults();
-		in.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-		in.setVoltageRampRate(Constants.Drivetrain.RAMP_RATE);
-		in.enableControl();
-		System.out.println("[CANTalon]" + in.getDescription() + " Initialized at device ID: " + in.getDeviceID());
-		return in;
+		gyro = new AnalogGyro(gp);
+		gyro.initGyro();
+		gyro.calibrate();
+
 	}
 
 	public void tankDrive(double leftv, double rightv) {
+
 		lefta.set(-leftv);
 		leftb.set(-leftv);
 		leftc.set(-leftv);
@@ -43,10 +41,37 @@ public class Drivetrain {
 		righta.set(rightv);
 		rightb.set(rightv);
 		rightc.set(rightv);
+
 	}
 
 	public void tankDrive(double[] input) {
 
 		tankDrive(input[0], input[1]);
+	}
+
+	public double getYaw() {
+		return gyro.getAngle();
+	}
+
+	public void resetGyro() {
+		gyro.reset();
+	}
+
+	private CANTalon configureTalon(CANTalon in, boolean brakeState, boolean controlMode, double rampRate) {
+
+		if (controlMode = true) {
+			in.changeControlMode(CANTalon.TalonControlMode.Speed);
+		} else if (controlMode = false) {
+			in.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		} else {
+
+		}
+
+		in.enableBrakeMode(brakeState);
+		in.setVoltageRampRate(rampRate);
+		in.enableControl();
+		in.clearStickyFaults();
+		System.out.println("[CANTalon]" + in.getDescription() + " Initialized at device ID: " + in.getDeviceID());
+		return in;
 	}
 }

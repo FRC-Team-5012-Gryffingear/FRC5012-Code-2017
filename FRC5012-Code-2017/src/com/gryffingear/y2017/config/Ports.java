@@ -14,9 +14,58 @@ public class Ports {
 		public static int DRIVE_LEFT_A_MOTOR = 0;
 		public static int DRIVE_LEFT_B_MOTOR = 1;
 		public static int DRIVE_LEFT_C_MOTOR = 2;
+		public static int DRIVE_LEFT_ENC_PORT = 0;
 
 		public static int DRIVE_RIGHT_A_MOTOR = 3;
 		public static int DRIVE_RIGHT_B_MOTOR = 4;
 		public static int DRIVE_RIGHT_C_MOTOR = 5;
+		public static int DRIVE_RIGHT_ENC_PORT = 1;
+		
+		public static int DRIVE_GYRO_PORT = 2;
+		
+		
+	}
+	
+	public static class Intake { 
+		
+		public static int INTAKE_MOTOR = 6;
+		public static int INTAKE_SOLENOID = 0;
+		
+		public static int HOPPER_SOLENOID =  1;
+		
+	}
+	
+	public static class Shooter {
+		
+		public static int SHOOTER_MOTOR = 7;
+		public static int SHOOTER_ENC_PORT = 3;
+		
+		public static int PRESHOOTER_MOTOR = 8;
+		
+		public static int TURRET_MOTOR = 8;
+		public static int TURRET_ENCODER = 4;
+		public static int TURRET_BUMP_A_PORT = 0;
+		public static int TURRET_BUMP_B_PORT = 1;
+	
+	}
+	
+	public static class Stager {
+		
+		public static int STAGER_MOTOR = 9;
+		
+		public static int AGITATOR_MOTOR = 10;
+	}
+	
+	public static class Climber {
+		
+		public static int CLIMBER_MOTOR = 11;
+		public static int CLIMBER_BUMP_PORT = 2;
+	}
+	
+	
+	
+	public static class Pneumatics {
+		
+		public static int PCM_CAN_ID = 0;
 	}
 }

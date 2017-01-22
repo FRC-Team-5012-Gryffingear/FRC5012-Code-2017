@@ -1,5 +1,5 @@
 
-package com.gryffingear.robot;
+package com.gryffingear.y2017.robot;
 
 import com.gryffingear.y2017.config.Ports;
 
@@ -112,7 +112,12 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-		bot.drive.tankDrive(driverL.getRawAxis(1), driverR.getRawAxis(1));
+		bot.drive.tankDrive(driverL.getRawAxis(1), 
+							driverR.getRawAxis(1));
+		
+		bot.operate(gamepad.getRawAxis(1), 
+					gamepad.getRawButton(6), 
+					gamepad.getRawButton(5));
 	}
 
 	/**
