@@ -20,7 +20,7 @@ public class DriveToAngleCommand extends Command {
 	}
 
 	protected void initialize() {
-		SuperSystem.getInstance().drive.resetGyro();
+		SuperSystem.getInstance().drivetrain.resetGyro();
 	}
 
 	protected boolean isFinished() {
@@ -29,16 +29,16 @@ public class DriveToAngleCommand extends Command {
 
 	protected void execute() {
 		double p = 0.02;
-		double error = SuperSystem.getInstance().drive.getYaw() - this.angle;
-		SuperSystem.getInstance().drive.tankDrive(p * error * speed, -p * error * speed);
+		double error = SuperSystem.getInstance().drivetrain.getYaw() - this.angle;
+		SuperSystem.getInstance().drivetrain.tankDrive(p * error * speed, -p * error * speed);
 	}
 
 	protected void end() {
-		SuperSystem.getInstance().drive.tankDrive(0.0, 0.0);
+		SuperSystem.getInstance().drivetrain.tankDrive(0.0, 0.0);
 	}
 
 	protected void interrupted() {
-		SuperSystem.getInstance().drive.tankDrive(0.0, 0.0);
+		SuperSystem.getInstance().drivetrain.tankDrive(0.0, 0.0);
 	}
 
 }

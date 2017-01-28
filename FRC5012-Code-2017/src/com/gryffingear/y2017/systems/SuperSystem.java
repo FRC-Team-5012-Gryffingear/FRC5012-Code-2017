@@ -5,13 +5,13 @@ import com.gryffingear.y2017.config.Ports;
 public class SuperSystem {
 
 	private static SuperSystem instance = null;
-	public Drivetrain drive = null;
+	public Drivetrain drivetrain = null;
 	public Shooter shoot = null;
 	public Intake intake = null;
 
 	private SuperSystem() {
 
-		drive = new Drivetrain(Ports.Drivetrain.DRIVE_LEFT_A_MOTOR, 
+		drivetrain = new Drivetrain(Ports.Drivetrain.DRIVE_LEFT_A_MOTOR, 
 							   Ports.Drivetrain.DRIVE_LEFT_B_MOTOR,
 							   Ports.Drivetrain.DRIVE_LEFT_C_MOTOR, 
 							   Ports.Drivetrain.DRIVE_RIGHT_A_MOTOR,
@@ -38,7 +38,7 @@ public class SuperSystem {
 		double throttle = (leftin + rightin) / 2.0;
 		double turning = (leftin - rightin) / 2.0;
 
-		drive.tankDrive(throttle + turning, throttle - turning);
+		drivetrain.tankDrive(throttle + turning, throttle - turning);
 
 	}
 

@@ -18,17 +18,17 @@ public class Drivetrain {
 
 	public Drivetrain(int la, int lb, int lc, int ra, int rb, int rc, int gp) {
 
-		lefta = configureTalon(new CANTalon(la), false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
-		leftb = configureTalon(new CANTalon(lb), false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
-		leftc = configureTalon(new CANTalon(lc), false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		lefta = configureTalon(new CANTalon(la), false, false, false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		leftb = configureTalon(new CANTalon(lb), false, false, false, false,  Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		leftc = configureTalon(new CANTalon(lc), false, false, false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
 
-		righta = configureTalon(new CANTalon(ra), false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
-		rightb = configureTalon(new CANTalon(rb), false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
-		rightc = configureTalon(new CANTalon(rc), false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		righta = configureTalon(new CANTalon(ra), false, false, false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		rightb = configureTalon(new CANTalon(rb), false, false, false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		rightc = configureTalon(new CANTalon(rc), false, false, false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
 
-		gyro = new AnalogGyro(gp);
-		gyro.initGyro();
-		gyro.calibrate();
+		//gyro = new AnalogGyro(gp);
+		//gyro.initGyro();
+		//gyro.calibrate();
 
 	}
 
@@ -57,15 +57,21 @@ public class Drivetrain {
 		gyro.reset();
 	}
 
-	private CANTalon configureTalon(CANTalon in, boolean brakeState, boolean controlMode, double rampRate) {
+	private CANTalon configureTalon(CANTalon in, boolean brakeState, boolean speedMode, boolean positionMode,
+			boolean voltageMode, double rampRate) {
 
-		if (controlMode = true) {
+		if (speedMode = true) {
 			in.changeControlMode(CANTalon.TalonControlMode.Speed);
-		} else if (controlMode = false) {
-			in.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-		} else {
+		} else if (positionMode = true) {
+			in.changeControlMode(CANTalon.TalonControlMode.Position);
 
+		} else if (voltageMode = true) {
+			in.changeControlMode(CANTalon.TalonControlMode.Voltage);
+		} else {
+			in.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 		}
+		
+		in.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 
 		in.enableBrakeMode(brakeState);
 		in.setVoltageRampRate(rampRate);

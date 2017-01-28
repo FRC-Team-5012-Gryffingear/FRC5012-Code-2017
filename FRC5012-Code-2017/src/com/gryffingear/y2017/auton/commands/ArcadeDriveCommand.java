@@ -19,7 +19,7 @@ public class ArcadeDriveCommand extends Command {
 	}
 
 	protected void initialize() {
-		SuperSystem.getInstance().drive.tankDrive(speed + turn, speed - turn);
+		SuperSystem.getInstance().drivetrain.tankDrive(speed + turn, speed - turn);
 	}
 
 	protected boolean isFinished() {
@@ -31,11 +31,11 @@ public class ArcadeDriveCommand extends Command {
 	}
 
 	protected void end() {
-		SuperSystem.getInstance().drive.tankDrive(0.0, 0.0);
+		SuperSystem.getInstance().drivetrain.tankDrive(0.0, 0.0);
 	}
 
 	protected void interrupted() {
-		SuperSystem.getInstance().drive.tankDrive(0.0, 0.0);
+		SuperSystem.getInstance().drivetrain.tankDrive(0.0, 0.0);
 	}
 
 }

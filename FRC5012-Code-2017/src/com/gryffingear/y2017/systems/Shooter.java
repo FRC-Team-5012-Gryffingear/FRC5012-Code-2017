@@ -5,6 +5,10 @@ import com.gryffingear.y2017.config.Constants;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.StatusFrameRate;
+
+
 public class Shooter {
 
 	private CANTalon shooterMotor = null;
@@ -24,11 +28,24 @@ public class Shooter {
 
 		preshooterMotor = configureTalon(new CANTalon(psm), false, false, false, false, Constants.Shooter.SHOOTER_RAMP_RATE);
 
-		turretMotor = configureTalon(new CANTalon(tm), true, false, false, false, Constants.Shooter.TURRET_RAMP_RATE);
-		turretEnc = new AnalogInput(te);
-		turretABump = new DigitalInput(tab);
-		turretBBump = new DigitalInput(tbb);
+		turretMotor = configureTalon(new CANTalon(tm), true, false, true, false, Constants.Shooter.TURRET_RAMP_RATE);
+		//turretEnc = new AnalogInput(te);
+		//turretABump = new DigitalInput(tab);
+		//turretBBump = new DigitalInput(tbb);
 
+		int absolutePosition = turretMotor.getPulseWidthPosition();
+		turretMotor.setEncPosition(absolutePosition);
+		turretMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+		turretMotor.reverseSensor(false);
+		turretMotor.configNominalOutputVoltage(0.0, 12.0);
+		turretMotor.configPeakOutputVoltage(12.0, -12.0);
+		turretMotor.setAllowableClosedLoopErr(0);
+		turretMotor.setProfile(0);
+		turretMotor.setF(0.0);
+		turretMotor.setP(0.1);
+		turretMotor.setI(0.0);
+		turretMotor.setD(0.0);
+		
 	}
 
 	public void runShooter(double shooterv, double preshooterv) {
@@ -42,7 +59,11 @@ public class Shooter {
 	public void runTurret(double turretv) {
 		
 		turretMotor.set(turretv);
+		
+		
 	}
+	
+	
 
 	private CANTalon configureTalon(CANTalon in, boolean brakeState, boolean speedMode, boolean positionMode,
 			boolean voltageMode, double rampRate) {
