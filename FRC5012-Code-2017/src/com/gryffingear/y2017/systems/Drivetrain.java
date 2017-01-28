@@ -26,9 +26,9 @@ public class Drivetrain {
 		rightb = configureTalon(new CANTalon(rb), false, false, false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
 		rightc = configureTalon(new CANTalon(rc), false, false, false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
 
-		//gyro = new AnalogGyro(gp);
-		//gyro.initGyro();
-		//gyro.calibrate();
+		gyro = new AnalogGyro(gp);
+		gyro.initGyro();
+		gyro.calibrate();
 
 	}
 

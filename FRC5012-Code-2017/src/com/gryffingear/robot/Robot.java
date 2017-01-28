@@ -1,19 +1,21 @@
 
 package com.gryffingear.robot;
 
+import com.gryffingear.autonomous.TestAuton;
 import com.gryffingear.y2017.config.Ports;
+import com.gryffingear.y2017.systems.SuperSystem;
+import com.gryffingear.y2017.systems.Drivetrain;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Joystick;
-
-import com.gryffingear.y2017.systems.SuperSystem;
-
-
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,26 +25,30 @@ import com.gryffingear.y2017.systems.SuperSystem;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	
+
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
 	SuperSystem bot = SuperSystem.getInstance();
-	
+
 	Joystick driverL = new Joystick(Ports.Controls.DRIVER_LEFT_PORT);
 	Joystick driverR = new Joystick(Ports.Controls.DRIVER_RIGHT_PORT);
 	Joystick gamepad = new Joystick(Ports.Controls.OPERATOR_PORT);
-	
+
+	private CommandGroup currAuton = null;
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
-		
-		
+
+		CameraServer.getInstance().startAutomaticCapture("cam0", 0);
+
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", chooser);
+		SmartDashboard.putData("Auto mode", new TestAuton());
+
 	}
 
 	/**
@@ -53,11 +59,21 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 
+		if (currAuton != null) {
+			System.out.println("[STATUS] Auton was running at this time. Cancelling...");
+			currAuton.cancel();
+			currAuton = null;
+		}
 	}
 
 	@Override
 	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
+		Scheduler.getInstance().disable();
+
+		currAuton = new TestAuton();
+		SmartDashboard.putString("Currently Selected Auton", currAuton.toString());
+		
+		
 	}
 
 	/**
@@ -73,7 +89,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = chooser.getSelected();
+		// autonomousCommand = chooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -81,10 +97,9 @@ public class Robot extends IterativeRobot {
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
-
-		// schedule the autonomous command (example)
-		if (autonomousCommand != null)
-			autonomousCommand.start();
+		currAuton = new TestAuton();
+		Scheduler.getInstance().add(currAuton);
+		Scheduler.getInstance().enable();
 	}
 
 	/**
@@ -110,14 +125,13 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		System.out.println("gyro: " + bot.drivetrain.getYaw());
+		
 		Scheduler.getInstance().run();
-		
-		bot.drive(driverL.getRawAxis(1), 
-							driverR.getRawAxis(1));
-		
-		bot.operate(gamepad.getRawAxis(1), 
-					gamepad.getRawButton(6), 
-					gamepad.getRawButton(5));
+
+		bot.drive(driverL.getRawAxis(1), driverR.getRawAxis(1), driverR.getRawButton(1));
+
+		bot.operate(gamepad.getRawAxis(1), gamepad.getRawButton(6), gamepad.getRawButton(5));
 	}
 
 	/**

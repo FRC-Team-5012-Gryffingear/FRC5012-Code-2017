@@ -21,7 +21,7 @@ public class Ports {
 		public static int DRIVE_RIGHT_C_MOTOR = 5;
 		public static int DRIVE_RIGHT_ENC_PORT = 1;
 		
-		public static int DRIVE_GYRO_PORT = 2;
+		public static int DRIVE_GYRO_PORT = 0;
 		
 		
 	}

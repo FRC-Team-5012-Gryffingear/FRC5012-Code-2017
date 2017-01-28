@@ -1,6 +1,8 @@
 package com.gryffingear.y2017.systems;
 
+import com.gryffingear.y2017.config.Constants;
 import com.gryffingear.y2017.config.Ports;
+import com.gryffingear.y2017.utilities.NegativeInertiaAccumulator;
 
 public class SuperSystem {
 
@@ -8,7 +10,9 @@ public class SuperSystem {
 	public Drivetrain drivetrain = null;
 	public Shooter shoot = null;
 	public Intake intake = null;
-
+	public GRIPVision vision = null;
+	
+	
 	private SuperSystem() {
 
 		drivetrain = new Drivetrain(Ports.Drivetrain.DRIVE_LEFT_A_MOTOR, 
@@ -30,13 +34,28 @@ public class SuperSystem {
 		intake = new Intake(Ports.Intake.INTAKE_MOTOR, 
 							Ports.Intake.INTAKE_SOLENOID,
 							Ports.Intake.HOPPER_SOLENOID);
-
+		
+		vision = new GRIPVision();
+		
+		
+		
 	}
 
-	public void drive(double leftin, double rightin) {
+	private NegativeInertiaAccumulator turnNia = new NegativeInertiaAccumulator(2.5);
+
+	public void drive(double leftin, double rightin, boolean autoAim) {
+		vision.update();
 
 		double throttle = (leftin + rightin) / 2.0;
 		double turning = (leftin - rightin) / 2.0;
+
+		if (!autoAim) {
+			turning += turnNia.update(turning);
+		} else {
+			throttle = 0.0;
+			double kP = Constants.SuperSystem.AUTO_AIM_KP;
+			turning = kP * vision.getX();
+		}
 
 		drivetrain.tankDrive(throttle + turning, throttle - turning);
 

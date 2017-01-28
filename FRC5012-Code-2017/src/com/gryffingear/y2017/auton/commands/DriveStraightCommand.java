@@ -11,7 +11,7 @@ public class DriveStraightCommand extends Command {
 	
 	public DriveStraightCommand(double speed, double angle, double timeout) {
 		
-		this.speed = speed;
+		this.speed = -speed;
 		this.angle = 0.0;
 		this.timeout = timeout;
 		this.setTimeout(timeout);
