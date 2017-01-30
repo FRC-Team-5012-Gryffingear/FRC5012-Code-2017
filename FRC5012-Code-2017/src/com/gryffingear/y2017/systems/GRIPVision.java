@@ -3,6 +3,8 @@ package com.gryffingear.y2017.systems;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class GRIPVision {
+	
+	private static GRIPVision instance = null;
 
 	NetworkTable table;
 
@@ -12,10 +14,18 @@ public class GRIPVision {
 
 	double[] defaultValue = new double[0];
 
-	public GRIPVision() {
+	private GRIPVision() {
 
 		table = NetworkTable.getTable("GRIP/myContoursReport");
 
+	}
+	
+	public static GRIPVision getInstance()  {
+		if(instance == null) {
+			instance = new GRIPVision();
+		}
+		
+		return instance;
 	}
 
 	public double getX() {
@@ -50,6 +60,15 @@ public class GRIPVision {
 			y = (table.getNumberArray("centerY", defaultValue)[0] - 240);
 			area = table.getNumberArray("area", defaultValue)[0];
 		}
+	}
+	
+	
+	/**
+	 * Converts x position to a yaw angle 
+	 * @return
+	 */
+	public double getYaw() {
+		return getX();
 	}
 
 }

@@ -35,7 +35,7 @@ public class SuperSystem {
 							Ports.Intake.INTAKE_SOLENOID,
 							Ports.Intake.HOPPER_SOLENOID);
 		
-		vision = new GRIPVision();
+		vision = GRIPVision.getInstance();
 		
 		
 		
