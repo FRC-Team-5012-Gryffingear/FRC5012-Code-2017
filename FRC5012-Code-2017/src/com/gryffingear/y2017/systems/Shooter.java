@@ -68,6 +68,7 @@ public class Shooter {
 	private CANTalon configureTalon(CANTalon in, boolean brakeState, boolean speedMode, boolean positionMode,
 			boolean voltageMode, double rampRate) {
 
+		/*
 		if (speedMode = true) {
 			in.changeControlMode(CANTalon.TalonControlMode.Speed);
 		} else if (positionMode = true) {
@@ -78,6 +79,10 @@ public class Shooter {
 		} else {
 			in.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 		}
+		
+		*/
+		 
+		in.changeControlMode(CANTalon.TalonControlMode.Voltage);
 
 		in.enableBrakeMode(brakeState);
 		in.setVoltageRampRate(rampRate);

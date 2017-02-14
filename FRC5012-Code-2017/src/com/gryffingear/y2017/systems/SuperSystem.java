@@ -11,6 +11,7 @@ public class SuperSystem {
 	public Shooter shoot = null;
 	public Intake intake = null;
 	public GRIPVision vision = null;
+	public Feeder feed = null;
 	
 	
 	private SuperSystem() {
@@ -37,6 +38,9 @@ public class SuperSystem {
 		
 		vision = GRIPVision.getInstance();
 		
+		feed = new Feeder(Ports.Feeder.AGITATOR_MOTOR,
+						   Ports.Feeder.FEEDER_MOTOR);
+		
 		
 		
 	}
@@ -61,11 +65,23 @@ public class SuperSystem {
 
 	}
 
-	public void operate(double intakeInput, boolean intakePos, boolean hopperPos) {
+	public void operate(double intakeInput, 
+						boolean intakePos, 
+						boolean hopperPos, 
+						double turretInput, 
+						boolean feederPositiveInput, 
+						boolean feederNegativeInput, 
+						boolean agitatorPositiveInput,
+						boolean agitatorNegativeInput) {
 
 		double iOut = 0;
 		boolean ipOut = false;
 		boolean hpOut = false;
+		
+		double turrOut = 0;
+		
+		double fOut = 0;
+		double aOut = 0;
 
 		if (intakeInput > .20) {
 			iOut = -1.0;
@@ -74,10 +90,40 @@ public class SuperSystem {
 		} else {
 			iOut = 0.0;
 		}
+		
+		if (turretInput > .20) {
+			turrOut = .25;
+		} else if (turretInput < -.20) {
+			turrOut = -.25;
+		} else {
+			turrOut = 0;
+		}
+		
+		if (feederPositiveInput) {
+			fOut = 1;
+		} else if (feederNegativeInput) {
+			fOut = -1;
+		} else {
+			fOut = 0;
+		}
+		
+		if (agitatorPositiveInput) { 
+			aOut = 1;
+		} else if (agitatorNegativeInput) {
+			aOut = -1;
+		} else {
+			aOut = 0;
+		}
 
 		intake.runIntake(iOut);
 		intake.setIntake(ipOut);
 		intake.setHopper(hpOut);
+		
+		shoot.runTurret(turrOut);
+		
+		feed.runAgitator(aOut);
+		feed.runFeeder(fOut);
+		
 	}
 
 	public static SuperSystem getInstance() {

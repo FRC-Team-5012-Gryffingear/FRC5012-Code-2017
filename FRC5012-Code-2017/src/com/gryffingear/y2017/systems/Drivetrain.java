@@ -1,6 +1,7 @@
 package com.gryffingear.y2017.systems;
 
 import com.gryffingear.y2017.config.Constants;
+import com.ctre.PigeonImu;
 import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.AnalogGyro;
 
@@ -14,21 +15,19 @@ public class Drivetrain {
 	private CANTalon rightb = null;
 	private CANTalon rightc = null;
 
-	private AnalogGyro gyro = null;
+	private PigeonImu gyro = null;
 
 	public Drivetrain(int la, int lb, int lc, int ra, int rb, int rc, int gp) {
 
-		lefta = configureTalon(new CANTalon(la), false, false, false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
-		leftb = configureTalon(new CANTalon(lb), false, false, false, false,  Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
-		leftc = configureTalon(new CANTalon(lc), false, false, false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		lefta = configureTalon(new CANTalon(la), false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		leftb = configureTalon(new CANTalon(lb), false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		leftc = configureTalon(new CANTalon(lc), false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
 
-		righta = configureTalon(new CANTalon(ra), false, false, false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
-		rightb = configureTalon(new CANTalon(rb), false, false, false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
-		rightc = configureTalon(new CANTalon(rc), false, false, false, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		righta = configureTalon(new CANTalon(ra), false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		rightb = configureTalon(new CANTalon(rb), false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		rightc = configureTalon(new CANTalon(rc), false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
 
-		gyro = new AnalogGyro(gp);
-		gyro.initGyro();
-		gyro.calibrate();
+		gyro = new PigeonImu(gp);
 
 	}
 
@@ -50,27 +49,16 @@ public class Drivetrain {
 	}
 
 	public double getYaw() {
-		return gyro.getAngle();
+		double[] ypr = new double[3];
+		return gyro.GetYawPitchRoll(ypr);
 	}
 
 	public void resetGyro() {
-		gyro.reset();
+		gyro.SetYaw(0);
 	}
 
-	private CANTalon configureTalon(CANTalon in, boolean brakeState, boolean speedMode, boolean positionMode,
-			boolean voltageMode, double rampRate) {
+	private CANTalon configureTalon(CANTalon in, boolean brakeState, double rampRate) {
 
-		if (speedMode = true) {
-			in.changeControlMode(CANTalon.TalonControlMode.Speed);
-		} else if (positionMode = true) {
-			in.changeControlMode(CANTalon.TalonControlMode.Position);
-
-		} else if (voltageMode = true) {
-			in.changeControlMode(CANTalon.TalonControlMode.Voltage);
-		} else {
-			in.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-		}
-		
 		in.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 
 		in.enableBrakeMode(brakeState);

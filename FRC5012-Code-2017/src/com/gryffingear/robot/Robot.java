@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import edu.wpi.first.wpilibj.AnalogInput;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -34,6 +36,8 @@ public class Robot extends IterativeRobot {
 	Joystick driverL = new Joystick(Ports.Controls.DRIVER_LEFT_PORT);
 	Joystick driverR = new Joystick(Ports.Controls.DRIVER_RIGHT_PORT);
 	Joystick gamepad = new Joystick(Ports.Controls.OPERATOR_PORT);
+
+	AnalogInput pot = new AnalogInput(1);
 
 	private CommandGroup currAuton = null;
 
@@ -72,8 +76,11 @@ public class Robot extends IterativeRobot {
 
 		currAuton = new TestAuton();
 		SmartDashboard.putString("Currently Selected Auton", currAuton.toString());
-		
-		
+
+		System.out.println("Potentiometer Voltlage: " + pot.getVoltage());
+
+		System.out.println("Gyro: " + bot.drivetrain.getYaw());
+
 	}
 
 	/**
@@ -126,12 +133,21 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		System.out.println("gyro: " + bot.drivetrain.getYaw());
-		
+
 		Scheduler.getInstance().run();
 
-		bot.drive(driverL.getRawAxis(1), driverR.getRawAxis(1), driverR.getRawButton(1));
+		bot.drive(driverL.getRawAxis(1), 
+				  driverR.getRawAxis(1), 
+				  driverR.getRawButton(1));
 
-		bot.operate(gamepad.getRawAxis(1), gamepad.getRawButton(6), gamepad.getRawButton(5));
+		bot.operate(gamepad.getRawAxis(1), 
+					gamepad.getRawButton(6),
+					gamepad.getRawButton(5),
+					gamepad.getRawAxis(3),
+					gamepad.getRawButton(1), 
+					gamepad.getRawButton(3),
+					gamepad.getRawButton(2),
+					gamepad.getRawButton(4));
 	}
 
 	/**

@@ -12,7 +12,7 @@ public class ArcadeDriveCommand extends Command {
 
 	public ArcadeDriveCommand(double speed, double turn, double timeout) {
 
-		this.speed = speed;
+		this.speed = -speed;
 		this.turn = turn;
 		this.timeout = timeout;
 		this.setTimeout(timeout);

@@ -49,11 +49,11 @@ public class Ports {
 	
 	}
 	
-	public static class Stager {
+	public static class Feeder {
 		
-		public static int STAGER_MOTOR = 9;
+		public static int AGITATOR_MOTOR = 9;
 		
-		public static int AGITATOR_MOTOR = 10;
+		public static int FEEDER_MOTOR = 10;
 	}
 	
 	public static class Climber {

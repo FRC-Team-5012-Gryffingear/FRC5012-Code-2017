@@ -53,6 +53,7 @@ public class GRIPVision {
 //		System.out.println("Area: " + table.getNumberArray("area", defaultValue)[0]);
 //		System.out.println();
 
+		
 		if (table.getNumberArray("centerX", defaultValue) != null
 				&& table.getNumberArray("centerX", defaultValue).length > 0) {
 

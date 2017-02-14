@@ -10,21 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class TestAuton extends CommandGroup{
 	
 	public TestAuton() {
-		this.addSequential(new TurnToAngleCommand(0.5, 90, 1));
-		this.addSequential(new WaitCommand(1));
-		this.addSequential(new TurnToAngleCommand(0.5, 90, 1));
-		this.addSequential(new WaitCommand(1));
-		this.addSequential(new TurnToAngleCommand(0.5, 90, 1));
-		this.addSequential(new WaitCommand(1));
-		this.addSequential(new TurnToAngleCommand(0.5, 90, 1));
-		this.addSequential(new WaitCommand(1));
-		this.addSequential(new TurnToAngleCommand(0.5, -90, 1));
-		this.addSequential(new WaitCommand(1));
-		this.addSequential(new TurnToAngleCommand(0.5, -90, 1));
-		this.addSequential(new WaitCommand(1));
-		this.addSequential(new TurnToAngleCommand(0.5, -90, 1));
-		this.addSequential(new WaitCommand(1));
-		this.addSequential(new TurnToAngleCommand(0.5, -90, 1));
-		this.addSequential(new WaitCommand(1));
+		this.addSequential(new ArcadeDriveCommand(-.5, -.2, 1));
+		
 	}
 }
