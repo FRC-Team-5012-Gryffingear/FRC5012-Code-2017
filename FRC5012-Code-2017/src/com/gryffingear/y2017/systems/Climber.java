@@ -10,7 +10,7 @@ public class Climber {
 
 	public Climber(int cm, int cs) {
 
-		climberMotor = configureTalon(new CANTalon(cm), true, false, false, false, 0);
+		climberMotor = configureTalon(new CANTalon(cm), CANTalon.TalonControlMode.PercentVbus, true, 0);
 		climbSensor = new DigitalInput(cs);
 	}
 
@@ -34,24 +34,13 @@ public class Climber {
 
 	}
 
-	private CANTalon configureTalon(CANTalon in, boolean brakeState, boolean speedMode, boolean positionMode,
-			boolean voltageMode, double rampRate) {
-
-		if (speedMode = true) {
-			in.changeControlMode(CANTalon.TalonControlMode.Speed);
-		} else if (positionMode = true) {
-			in.changeControlMode(CANTalon.TalonControlMode.Position);
-
-		} else if (voltageMode = true) {
-			in.changeControlMode(CANTalon.TalonControlMode.Voltage);
-		} else {
-			in.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-		}
-
-		in.enableBrakeMode(brakeState);
+	private CANTalon configureTalon(CANTalon in, CANTalon.TalonControlMode mode, boolean brakeState, double rampRate) {
+		in.changeControlMode(mode);
 		in.setVoltageRampRate(rampRate);
+		in.enableBrakeMode(brakeState);
 		in.enableControl();
 		in.clearStickyFaults();
+		
 		System.out.println("[CANTalon]" + in.getDescription() + " Initialized at device ID: " + in.getDeviceID());
 		return in;
 	}

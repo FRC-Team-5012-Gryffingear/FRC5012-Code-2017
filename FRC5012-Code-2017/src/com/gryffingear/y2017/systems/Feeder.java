@@ -11,8 +11,8 @@ public class Feeder {
 
 	public Feeder(int am, int fm) {
 
-		agitatorMotor = configureTalon(new CANTalon(am), false, 0);
-		feederMotor = configureTalon(new CANTalon(fm), false, 0);
+		agitatorMotor = configureTalon(new CANTalon(am), CANTalon.TalonControlMode.PercentVbus, false, 0);
+		feederMotor = configureTalon(new CANTalon(fm), CANTalon.TalonControlMode.PercentVbus, false, 0);
 
 	}
 
@@ -25,13 +25,13 @@ public class Feeder {
 		agitatorMotor.set(agitatorv);
 	}
 
-	private CANTalon configureTalon(CANTalon in, boolean brakeState, double rampRate) {
-
-		in.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-		in.enableBrakeMode(brakeState);
+	private CANTalon configureTalon(CANTalon in, CANTalon.TalonControlMode mode, boolean brakeState, double rampRate) {
+		in.changeControlMode(mode);
 		in.setVoltageRampRate(rampRate);
+		in.enableBrakeMode(brakeState);
 		in.enableControl();
 		in.clearStickyFaults();
+		
 		System.out.println("[CANTalon]" + in.getDescription() + " Initialized at device ID: " + in.getDeviceID());
 		return in;
 	}

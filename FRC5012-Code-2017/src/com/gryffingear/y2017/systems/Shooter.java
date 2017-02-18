@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.StatusFrameRate;
 
-
 public class Shooter {
 
 	private CANTalon shooterMotor = null;
@@ -23,15 +22,18 @@ public class Shooter {
 
 	public Shooter(int sm, int se, int psm, int tm, int te, int tab, int tbb) {
 
-		shooterMotor = configureTalon(new CANTalon(sm), false, Constants.Shooter.SHOOTER_RAMP_RATE);
+		shooterMotor = configureTalon(new CANTalon(sm), CANTalon.TalonControlMode.PercentVbus, false,
+				Constants.Shooter.SHOOTER_RAMP_RATE);
 		shooterEnc = new AnalogInput(se);
 
-		preshooterMotor = configureTalon(new CANTalon(psm), false, Constants.Shooter.SHOOTER_RAMP_RATE);
+		preshooterMotor = configureTalon(new CANTalon(psm), CANTalon.TalonControlMode.PercentVbus, false,
+				Constants.Shooter.SHOOTER_RAMP_RATE);
 
-		turretMotor = configureTalon(new CANTalon(tm), false, Constants.Shooter.TURRET_RAMP_RATE);
-		//turretEnc = new AnalogInput(te);
-		//turretABump = new DigitalInput(tab);
-		//turretBBump = new DigitalInput(tbb);
+		turretMotor = configureTalon(new CANTalon(tm), CANTalon.TalonControlMode.PercentVbus, false,
+				Constants.Shooter.TURRET_RAMP_RATE);
+		// turretEnc = new AnalogInput(te);
+		// turretABump = new DigitalInput(tab);
+		// turretBBump = new DigitalInput(tbb);
 
 		int absolutePosition = turretMotor.getPulseWidthPosition();
 		turretMotor.setEncPosition(absolutePosition);
@@ -45,34 +47,34 @@ public class Shooter {
 		turretMotor.setP(0.1);
 		turretMotor.setI(0.0);
 		turretMotor.setD(0.0);
-		
+
 	}
 
 	public void runShooter(double shooterv, double preshooterv) {
 
 		shooterMotor.set(shooterv);
 		preshooterMotor.set(preshooterv);
-		
 
 	}
-	
+
 	public void runTurret(double turretv) {
-		
+
 		turretMotor.set(turretv);
-		
+
 	}
-	
-	
 
-	private CANTalon configureTalon(CANTalon in, boolean brakeState, double rampRate) {
+	public void setPosition(double position) {
+		turretMotor.changeControlMode(CANTalon.TalonControlMode.Position);
+		turretMotor.set(position);
+	}
 
- 
-		in.changeControlMode(CANTalon.TalonControlMode.Voltage);
-
-		in.enableBrakeMode(brakeState);
+	private CANTalon configureTalon(CANTalon in, CANTalon.TalonControlMode mode, boolean brakeState, double rampRate) {
+		in.changeControlMode(mode);
 		in.setVoltageRampRate(rampRate);
+		in.enableBrakeMode(brakeState);
 		in.enableControl();
 		in.clearStickyFaults();
+
 		System.out.println("[CANTalon]" + in.getDescription() + " Initialized at device ID: " + in.getDeviceID());
 		return in;
 	}
