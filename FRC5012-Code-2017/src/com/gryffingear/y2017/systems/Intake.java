@@ -13,7 +13,7 @@ public class Intake {
 
 	public Intake(int im, int is, int hs) {
 
-		intakeMotor = configureTalon(new CANTalon(im), false, 0);
+		intakeMotor = configureTalon(new CANTalon(im), false, false, false, false, 0);
 		intakeSolenoid = new Solenoid(is);
 
 		hopperSolenoid = new Solenoid(hs);
@@ -34,9 +34,20 @@ public class Intake {
 		hopperSolenoid.set(state);
 	}
 
-	private CANTalon configureTalon(CANTalon in, boolean brakeState, double rampRate) {
+	private CANTalon configureTalon(CANTalon in, boolean brakeState, boolean speedMode, boolean positionMode,
+			boolean voltageMode, double rampRate) {
 
-		in.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		if (speedMode = true) {
+			in.changeControlMode(CANTalon.TalonControlMode.Speed);
+		} else if (positionMode = true) {
+			in.changeControlMode(CANTalon.TalonControlMode.Position);
+
+		} else if (voltageMode = true) {
+			in.changeControlMode(CANTalon.TalonControlMode.Voltage);
+		} else {
+			in.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		}
+
 		in.enableBrakeMode(brakeState);
 		in.setVoltageRampRate(rampRate);
 		in.enableControl();

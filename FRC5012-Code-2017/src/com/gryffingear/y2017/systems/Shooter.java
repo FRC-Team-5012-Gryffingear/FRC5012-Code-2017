@@ -23,12 +23,12 @@ public class Shooter {
 
 	public Shooter(int sm, int se, int psm, int tm, int te, int tab, int tbb) {
 
-		shooterMotor = configureTalon(new CANTalon(sm), false, Constants.Shooter.SHOOTER_RAMP_RATE);
+		shooterMotor = configureTalon(new CANTalon(sm), false, false, false, false, Constants.Shooter.SHOOTER_RAMP_RATE);
 		shooterEnc = new AnalogInput(se);
 
-		preshooterMotor = configureTalon(new CANTalon(psm), false, Constants.Shooter.SHOOTER_RAMP_RATE);
+		preshooterMotor = configureTalon(new CANTalon(psm), false, false, false, false, Constants.Shooter.SHOOTER_RAMP_RATE);
 
-		turretMotor = configureTalon(new CANTalon(tm), false, Constants.Shooter.TURRET_RAMP_RATE);
+		turretMotor = configureTalon(new CANTalon(tm), true, false, true, false, Constants.Shooter.TURRET_RAMP_RATE);
 		//turretEnc = new AnalogInput(te);
 		//turretABump = new DigitalInput(tab);
 		//turretBBump = new DigitalInput(tbb);
@@ -60,13 +60,28 @@ public class Shooter {
 		
 		turretMotor.set(turretv);
 		
+		
 	}
 	
 	
 
-	private CANTalon configureTalon(CANTalon in, boolean brakeState, double rampRate) {
+	private CANTalon configureTalon(CANTalon in, boolean brakeState, boolean speedMode, boolean positionMode,
+			boolean voltageMode, double rampRate) {
 
- 
+		/*
+		if (speedMode = true) {
+			in.changeControlMode(CANTalon.TalonControlMode.Speed);
+		} else if (positionMode = true) {
+			in.changeControlMode(CANTalon.TalonControlMode.Position);
+
+		} else if (voltageMode = true) {
+			in.changeControlMode(CANTalon.TalonControlMode.Voltage);
+		} else {
+			in.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		}
+		
+		*/
+		 
 		in.changeControlMode(CANTalon.TalonControlMode.Voltage);
 
 		in.enableBrakeMode(brakeState);
