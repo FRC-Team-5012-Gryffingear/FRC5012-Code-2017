@@ -45,21 +45,12 @@ public class SuperSystem {
 		
 	}
 
-	private NegativeInertiaAccumulator turnNia = new NegativeInertiaAccumulator(2.5);
-
-	public void drive(double leftin, double rightin, boolean autoAim) {
-		vision.update();
+	public void drive(double leftin,
+					  double rightin) {
+		
 
 		double throttle = (leftin + rightin) / 2.0;
 		double turning = (leftin - rightin) / 2.0;
-
-		if (!autoAim) {
-			turning += turnNia.update(turning);
-		} else {
-			throttle = 0.0;
-			double kP = Constants.SuperSystem.AUTO_AIM_KP;
-			turning = kP * vision.getX();
-		}
 
 		drivetrain.tankDrive(throttle + turning, throttle - turning);
 
@@ -69,20 +60,26 @@ public class SuperSystem {
 						boolean intakePos, 
 						boolean hopperPos, 
 						double turretInput, 
+						boolean autoAim,
 						boolean feederPositiveInput, 
 						boolean feederNegativeInput, 
 						boolean agitatorPositiveInput,
-						boolean agitatorNegativeInput) {
+						boolean agitatorNegativeInput,
+						boolean shooterInput) {
+		
+		vision.update();
 
 		double iOut = 0;
 		boolean ipOut = false;
 		boolean hpOut = false;
 		
 		double turrOut = 0;
+		double sOut = 0;
+		double psOut = 0;
 		
 		double fOut = 0;
 		double aOut = 0;
-
+		
 		if (intakeInput > .20) {
 			iOut = -1.0;
 		} else if (intakeInput < -.20) {
@@ -95,7 +92,11 @@ public class SuperSystem {
 			turrOut = .25;
 		} else if (turretInput < -.20) {
 			turrOut = -.25;
-		} else {
+		} else if(autoAim) {
+			double kP = Constants.SuperSystem.AUTO_AIM_KP;
+			turrOut = kP * vision.getX();
+		}
+		else {
 			turrOut = 0;
 		}
 		
@@ -114,12 +115,24 @@ public class SuperSystem {
 		} else {
 			aOut = 0;
 		}
+		
+		if (shooterInput) {
+			sOut = 1;
+			psOut = .8 * sOut;
+		} else if (shooterInput) {
+			sOut = -1;
+			psOut = .8 * sOut;
+		} else {
+			sOut = 0;
+			psOut = 0;
+		}
 
 		intake.runIntake(iOut);
 		intake.setIntake(ipOut);
 		intake.setHopper(hpOut);
 		
 		shoot.runTurret(turrOut);
+		shoot.runShooter(sOut, psOut);
 		
 		feed.runAgitator(aOut);
 		feed.runFeeder(fOut);
