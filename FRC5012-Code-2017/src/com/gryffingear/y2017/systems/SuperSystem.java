@@ -2,6 +2,7 @@ package com.gryffingear.y2017.systems;
 
 import com.gryffingear.y2017.config.Constants;
 import com.gryffingear.y2017.config.Ports;
+import com.gryffingear.y2017.utilities.GryffinMath;
 import com.gryffingear.y2017.utilities.NegativeInertiaAccumulator;
 
 public class SuperSystem {
@@ -80,13 +81,7 @@ public class SuperSystem {
 		double fOut = 0;
 		double aOut = 0;
 		
-		if (intakeInput > .20) {
-			iOut = -1.0;
-		} else if (intakeInput < -.20) {
-			iOut = 1.0;
-		} else {
-			iOut = 0.0;
-		}
+		iOut = GryffinMath.thresholdOnOff(intakeInput, 0.20);
 		
 		if (turretInput > .20) {
 			turrOut = .25;

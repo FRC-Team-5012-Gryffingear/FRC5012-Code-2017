@@ -12,8 +12,6 @@ public class GRIPVision {
 	double y = 0;
 	double area = 0;
 
-	double[] defaultValue = new double[0];
-
 	private GRIPVision() {
 
 		table = NetworkTable.getTable("GRIP/myContoursReport");
@@ -53,13 +51,17 @@ public class GRIPVision {
 //		System.out.println("Area: " + table.getNumberArray("area", defaultValue)[0]);
 //		System.out.println();
 
-		
-		if (table.getNumberArray("centerX", defaultValue) != null
-				&& table.getNumberArray("centerX", defaultValue).length > 0) {
+		double[] defaultValue = {0};	// initialize an array with size 1, element is 0
+		double[] cx = table.getNumberArray("centerX", defaultValue);
+		double[] cy = table.getNumberArray("centerY", defaultValue);
+		double[] ar = table.getNumberArray("area", defaultValue);
 
-			x = (table.getNumberArray("centerX", defaultValue)[0] - 320);
-			y = (table.getNumberArray("centerY", defaultValue)[0] - 240);
-			area = table.getNumberArray("area", defaultValue)[0];
+		
+		if (cx.length > 0) {
+
+			x = (cx[0] - 320);
+			y = (cy[0] - 240);
+			area = ar[0];
 		}
 	}
 	

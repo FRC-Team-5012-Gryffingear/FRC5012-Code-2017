@@ -204,5 +204,35 @@ public class GryffinMath {
 	}
 	
 	
+	/**
+	 * Converts a drivetrain angle to a turret setpoint
+	 * @param in
+	 * @return
+	 */
+	public static double toTurretAngle(double in) {
+		return in; // todo - tune/scale properly
+	}
+	
+	/**
+	 * converts a turret setpoint to a drivetrain angle
+	 * @param in
+	 * @return
+	 */
+	public static double fromTurretAngle(double in) {
+		return in; // todo - tune/scale properly
+		
+	}
+	
+	public static double thresholdOnOff(double in, double threshold, double mag) {
+		if(in > threshold) return mag;
+		if(in < -threshold) return -mag;
+		return 0;
+	}
+	
+	public static double thresholdOnOff(double in, double threshold) {
+		if(in > threshold) return 1.0;
+		if(in < -threshold) return -1.0;
+		return 0;
+	}
 
 }
