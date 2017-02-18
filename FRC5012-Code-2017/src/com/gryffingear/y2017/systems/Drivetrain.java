@@ -19,16 +19,15 @@ public class Drivetrain {
 
 	public Drivetrain(int la, int lb, int lc, int ra, int rb, int rc, int gp) {
 
-		lefta = configureTalon(new CANTalon(la), false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
-		leftb = configureTalon(new CANTalon(lb), false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
-		leftc = configureTalon(new CANTalon(lc), false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		lefta = configureTalon(new CANTalon(la), CANTalon.TalonControlMode.PercentVbus, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		leftb = configureTalon(new CANTalon(lb), CANTalon.TalonControlMode.PercentVbus, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		leftc = configureTalon(new CANTalon(lc), CANTalon.TalonControlMode.PercentVbus, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
 
-		righta = configureTalon(new CANTalon(ra), false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
-		rightb = configureTalon(new CANTalon(rb), false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
-		rightc = configureTalon(new CANTalon(rc), false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		righta = configureTalon(new CANTalon(ra), CANTalon.TalonControlMode.PercentVbus, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		rightb = configureTalon(new CANTalon(rb), CANTalon.TalonControlMode.PercentVbus, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		rightc = configureTalon(new CANTalon(rc), CANTalon.TalonControlMode.PercentVbus, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
 
 		gyro = new PigeonImu(gp);
-
 	}
 
 	public void tankDrive(double leftv, double rightv) {
@@ -57,14 +56,13 @@ public class Drivetrain {
 		gyro.SetYaw(0);
 	}
 
-	private CANTalon configureTalon(CANTalon in, boolean brakeState, double rampRate) {
-
-		in.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-
-		in.enableBrakeMode(brakeState);
+	private CANTalon configureTalon(CANTalon in, CANTalon.TalonControlMode mode, boolean brakeState, double rampRate) {
+		in.changeControlMode(mode);
 		in.setVoltageRampRate(rampRate);
+		in.enableBrakeMode(brakeState);
 		in.enableControl();
 		in.clearStickyFaults();
+		
 		System.out.println("[CANTalon]" + in.getDescription() + " Initialized at device ID: " + in.getDeviceID());
 		return in;
 	}

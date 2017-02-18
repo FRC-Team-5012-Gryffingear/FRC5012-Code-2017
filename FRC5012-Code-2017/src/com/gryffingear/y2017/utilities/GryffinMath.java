@@ -223,6 +223,10 @@ public class GryffinMath {
 		
 	}
 	
+	public static double visionXToAngle(double in) {
+		return in; // todo - tune/scale properly
+	}
+	
 	public static double thresholdOnOff(double in, double threshold, double mag) {
 		if(in > threshold) return mag;
 		if(in < -threshold) return -mag;

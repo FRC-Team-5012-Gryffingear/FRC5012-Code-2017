@@ -1,5 +1,7 @@
 package com.gryffingear.y2017.systems;
 
+import com.gryffingear.y2017.utilities.GryffinMath;
+
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class GRIPVision {
@@ -71,7 +73,7 @@ public class GRIPVision {
 	 * @return
 	 */
 	public double getYaw() {
-		return getX();
+		return GryffinMath.visionXToAngle(getX());
 	}
 
 }
