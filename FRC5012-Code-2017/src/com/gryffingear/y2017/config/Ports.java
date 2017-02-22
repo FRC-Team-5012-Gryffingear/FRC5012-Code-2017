@@ -29,9 +29,9 @@ public class Ports {
 	public static class Intake { 
 		
 		public static int INTAKE_MOTOR = 10;
-		public static int INTAKE_SOLENOID = 0;
+		public static int INTAKE_SOLENOID = 1;
 		
-		public static int HOPPER_SOLENOID =  1;
+		public static int HOPPER_SOLENOID =  0;
 		
 	}
 	
@@ -51,9 +51,10 @@ public class Ports {
 	
 	public static class Feeder {
 		
-		public static int AGITATOR_MOTOR = 7;
+		public static int AGITATOR_MOTOR_A = 12;
+		public static int AGITATOR_MOTOR_B = 13;
 		
-		public static int FEEDER_MOTOR = 12;
+		public static int FEEDER_MOTOR = 7;
 	}
 	
 	public static class Climber {

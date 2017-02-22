@@ -15,7 +15,7 @@ public class Drivetrain {
 	private CANTalon rightb = null;
 	private CANTalon rightc = null;
 
-	private PigeonImu gyro = null;
+	private PigeonImu imu = null;
 
 	public Drivetrain(int la, int lb, int lc, int ra, int rb, int rc, int gp) {
 
@@ -27,7 +27,8 @@ public class Drivetrain {
 		rightb = configureTalon(new CANTalon(rb), CANTalon.TalonControlMode.PercentVbus, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
 		rightc = configureTalon(new CANTalon(rc), CANTalon.TalonControlMode.PercentVbus, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
 
-		gyro = new PigeonImu(gp);
+		imu = new PigeonImu(gp);
+		
 	}
 
 	public void tankDrive(double leftv, double rightv) {
@@ -49,11 +50,21 @@ public class Drivetrain {
 
 	public double getYaw() {
 		double[] ypr = new double[3];
-		return gyro.GetYawPitchRoll(ypr);
+		imu.GetYawPitchRoll(ypr);
+		
+		return ypr[0];
+	}
+	
+	public double getRawRate() {
+		double[] xyz = new double[3];
+		imu.GetRawGyro(xyz);
+		
+		return xyz[2];
+		
 	}
 
 	public void resetGyro() {
-		gyro.SetYaw(0);
+		imu.SetYaw(0);
 	}
 
 	private CANTalon configureTalon(CANTalon in, CANTalon.TalonControlMode mode, boolean brakeState, double rampRate) {

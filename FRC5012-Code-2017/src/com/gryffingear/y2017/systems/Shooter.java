@@ -78,4 +78,8 @@ public class Shooter {
 		System.out.println("[CANTalon]" + in.getDescription() + " Initialized at device ID: " + in.getDeviceID());
 		return in;
 	}
+	
+	public void printPosition() {
+		System.out.println("Turret pos: " + turretMotor.getEncPosition());
+	}
 }

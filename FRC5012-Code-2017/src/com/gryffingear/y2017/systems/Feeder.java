@@ -6,12 +6,14 @@ import com.ctre.CANTalon;
 
 public class Feeder {
 
-	private CANTalon agitatorMotor = null;
+	private CANTalon agitatorMotorA = null;
+	private CANTalon agitatorMotorB = null;
 	private CANTalon feederMotor = null;
 
-	public Feeder(int am, int fm) {
+	public Feeder(int am, int ab, int fm) {
 
-		agitatorMotor = configureTalon(new CANTalon(am), CANTalon.TalonControlMode.PercentVbus, false, 0);
+		agitatorMotorA = configureTalon(new CANTalon(am), CANTalon.TalonControlMode.PercentVbus, false, 0);
+		agitatorMotorB = configureTalon(new CANTalon(ab), CANTalon.TalonControlMode.PercentVbus, false, 0);
 		feederMotor = configureTalon(new CANTalon(fm), CANTalon.TalonControlMode.PercentVbus, false, 0);
 
 	}
@@ -22,7 +24,8 @@ public class Feeder {
 	}
 
 	public void runAgitator(double agitatorv) {
-		agitatorMotor.set(agitatorv);
+		agitatorMotorA.set(-agitatorv);
+		agitatorMotorB.set(agitatorv);
 	}
 
 	private CANTalon configureTalon(CANTalon in, CANTalon.TalonControlMode mode, boolean brakeState, double rampRate) {
