@@ -60,7 +60,7 @@ public class Drivetrain {
         double linear_power;
         double wheelNonLinearity;
         boolean quickTurn = Math.abs(throttle) < .05;//Math.abs(wheel) > .375 &&
-        
+        wheel = -wheel;
         double neg_inertia = wheel - old_wheel;
         old_wheel = wheel;
 

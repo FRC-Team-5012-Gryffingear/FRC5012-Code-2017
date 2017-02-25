@@ -136,8 +136,8 @@ public class Robot extends IterativeRobot {
 
 		Scheduler.getInstance().run();
 
-		bot.drive(driverL.getRawAxis(0), 
-				  driverR.getRawAxis(1),
+		bot.drive(driverL.getRawAxis(1), 
+				  driverR.getRawAxis(0),
 				  driverL.getRawButton(1));
 
 		bot.operate(gamepad.getRawAxis(1), 
