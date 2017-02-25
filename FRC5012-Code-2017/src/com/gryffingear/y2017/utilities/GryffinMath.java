@@ -238,5 +238,7 @@ public class GryffinMath {
 		if(in < -threshold) return -1.0;
 		return 0;
 	}
+	
+	
 
 }
