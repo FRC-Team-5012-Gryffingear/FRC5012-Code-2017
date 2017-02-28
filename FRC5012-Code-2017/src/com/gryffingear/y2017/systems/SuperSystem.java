@@ -58,7 +58,7 @@ public class SuperSystem {
 	}
 
 	public void drive(double throttle,
-					  double turning,
+					  double turning, boolean quickturn,
 					  boolean climberIn) {
 		
 /*
@@ -74,9 +74,9 @@ public class SuperSystem {
 		}
 			
 		climb.Climb(-cOut);
-		//drivetrain.tankDrive(throttle + turning, throttle - turning);
+//		drivetrain.tankDrive(throttle + turning, throttle - turning);
 
-		drivetrain.cheesyDrive(turning, throttle);
+		drivetrain.cheesyDrive(turning, throttle, quickturn);
 	}
 
 	public void operate(double intakeInput, //left joy up/down

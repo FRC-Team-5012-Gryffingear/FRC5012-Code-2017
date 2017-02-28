@@ -53,13 +53,13 @@ public class Drivetrain {
     private double neg_inertia_accumulator = 0.0;
 
 	
-	public void cheesyDrive(double wheel, double throttle) {
+	public void cheesyDrive(double wheel, double throttle, boolean quickTurn) {
         double left_pwm, right_pwm, overPower;
         double sensitivity = 1.2;
         double angular_power;
         double linear_power;
         double wheelNonLinearity;
-        boolean quickTurn = Math.abs(throttle) < .05;//Math.abs(wheel) > .375 &&
+        
         wheel = -wheel;
         double neg_inertia = wheel - old_wheel;
         old_wheel = wheel;
