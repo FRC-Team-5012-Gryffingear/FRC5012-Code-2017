@@ -59,7 +59,7 @@ public class GRIPVision {
 		double[] ar = table.getNumberArray("area", defaultValue);
 
 		
-		if (cx.length > 0) {
+		if (cx.length > 0 && cx != null) {
 
 			x = (cx[0] - 320);
 			y = (cy[0] - 240);

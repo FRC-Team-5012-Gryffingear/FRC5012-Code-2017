@@ -128,6 +128,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	/**
+	 * 
 	 * This function is called periodically during operator control
 	 */
 	@Override
@@ -137,10 +138,10 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 
 	//	bot.drive((driverL.getRawAxis(1)+driverR.getRawAxis(1))/2, 
-//			(driverL.getRawAxis(1)-driverR.getRawAxis(1))/2, false,
+	//	(driverL.getRawAxis(1)-driverR.getRawAxis(1))/2, false,
 		bot.drive(driverL.getRawAxis(1), 
 				driverR.getRawAxis(0), driverR.getRawButton(5),
-				  driverL.getRawButton(1));
+				  driverL.getRawButton(2));
 
 		bot.operate(gamepad.getRawAxis(1), 
 					gamepad.getRawAxis(1) > .2,
@@ -158,5 +159,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
+		
+		bot.shoot.testTurret();
+		bot.shoot.printPosition();
 	}
 }

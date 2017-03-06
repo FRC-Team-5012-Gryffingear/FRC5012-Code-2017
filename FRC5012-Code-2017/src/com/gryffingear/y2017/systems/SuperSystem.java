@@ -68,7 +68,7 @@ public class SuperSystem {
 		double cOut = 0;
 		
 		if (climberIn) {
-			cOut = .6;
+			cOut = .8;
 		} else {
 			cOut = 0;
 		}

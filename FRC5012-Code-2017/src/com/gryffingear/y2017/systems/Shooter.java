@@ -2,6 +2,8 @@ package com.gryffingear.y2017.systems;
 
 import com.ctre.CANTalon;
 import com.gryffingear.y2017.config.Constants;
+import com.gryffingear.y2017.utilities.GryffinMath;
+
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -38,9 +40,9 @@ public class Shooter {
 		int absolutePosition = turretMotor.getPulseWidthPosition();
 		turretMotor.setEncPosition(absolutePosition);
 		turretMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
-		turretMotor.reverseSensor(false);
-		turretMotor.configNominalOutputVoltage(0.0, 12.0);
-		turretMotor.configPeakOutputVoltage(12.0, -12.0);
+		turretMotor.reverseSensor(true);
+		turretMotor.configNominalOutputVoltage(0.0, 5.0);
+		turretMotor.configPeakOutputVoltage(5.0, -5.0);
 		turretMotor.setAllowableClosedLoopErr(0);
 		turretMotor.setProfile(0);
 		turretMotor.setF(0.0);
@@ -57,15 +59,34 @@ public class Shooter {
 
 	}
 
+	double pos = 0;
 	public void runTurret(double turretv) {
-
+		pos = GryffinMath.map(turretMotor.getEncPosition(), 12037, 32535, 0, 180);
+		
 		turretMotor.set(turretv);
 
 	}
 
 	public void setPosition(double position) {
+		position = GryffinMath.map(position, 0, 180, 12037, 32535);
+		System.out.println("setpoint: " + position);
 		turretMotor.changeControlMode(CANTalon.TalonControlMode.Position);
 		turretMotor.set(position);
+	}
+	
+	public void zeroTurret() {
+		
+		turretMotor.enableLimitSwitch(true, false);
+		turretMotor.enableZeroSensorPositionOnForwardLimit(true);
+		
+			runTurret(0.25);
+		///}else {
+	//		runTurret(0.0);
+		//}
+	}
+	
+	public void testTurret() {
+		this.setPosition(0);
 	}
 
 	private CANTalon configureTalon(CANTalon in, CANTalon.TalonControlMode mode, boolean brakeState, double rampRate) {
@@ -80,6 +101,6 @@ public class Shooter {
 	}
 	
 	public void printPosition() {
-		System.out.println("Turret pos: " + turretMotor.getEncPosition());
+		System.out.println("Turret pos: " + pos);
 	}
 }

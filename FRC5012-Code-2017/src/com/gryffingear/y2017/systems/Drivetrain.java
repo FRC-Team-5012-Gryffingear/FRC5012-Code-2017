@@ -127,10 +127,13 @@ public class Drivetrain {
         }
 
         if(quickTurn) {
-            angular_power = GryffinMath.signedSquare(angular_power, 1);   //make turning less sensitive under quickturn
+            angular_power = angular_power;//GryffinMath.signedSquare(angular_power, 1);   //make turning less sensitive under quickturn
             if(Math.abs(angular_power) >= .745) {
             //    angular_power = 1.0*EagleMath.signum(angular_power);
             }
+        } else {
+        	angular_power *= -Math.signum(linear_power);
+        	//angular_power *= -1;
         }
         
         right_pwm = left_pwm = linear_power;
@@ -149,6 +152,7 @@ public class Drivetrain {
         } else if (right_pwm < -1.0) {
             left_pwm += overPower * (-1.0 - right_pwm);
             right_pwm = -1.0;
+            
         }
         tankDrive((left_pwm), (right_pwm));
     }

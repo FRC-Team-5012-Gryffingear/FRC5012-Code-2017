@@ -10,7 +10,7 @@ public class Climber {
 
 	public Climber(int cm, int cs) {
 
-		climberMotor = configureTalon(new CANTalon(cm), CANTalon.TalonControlMode.PercentVbus, true, 0);
+		climberMotor = configureTalon(new CANTalon(cm), CANTalon.TalonControlMode.PercentVbus, false, 0);
 		climbSensor = new DigitalInput(cs);
 	}
 
