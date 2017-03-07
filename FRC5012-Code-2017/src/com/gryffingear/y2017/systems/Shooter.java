@@ -62,7 +62,7 @@ public class Shooter {
 	double pos = 0;
 	public void runTurret(double turretv) {
 		pos = GryffinMath.map(turretMotor.getEncPosition(), 12037, 32535, 0, 180);
-		
+		turretMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 		turretMotor.set(turretv);
 
 	}
