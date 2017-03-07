@@ -64,38 +64,29 @@ public class Drivetrain {
         double neg_inertia = wheel - old_wheel;
         old_wheel = wheel;
 
-        if (true) {
-            wheelNonLinearity = Constants.CD_WHEEL_NONLIN_HIGH;        //Used to be .9 higher is less sensitive
-            // Apply a sin function that's scaled to make it feel bette
-//            wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
-            wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
-        } else {
-            wheelNonLinearity = Constants.CD_WHEEL_NONLIN_LOW;
-            wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
-            wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
-            wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
-        }
+        wheelNonLinearity = Constants.CD_WHEEL_NONLIN_HIGH;        //Used to be .9 higher is less sensitive
+        // Apply a sin function that's scaled to make it feel better
+        wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
 
         double neg_inertia_scalar;
-        if (true) {
-            neg_inertia_scalar = Constants.CD_NEG_INERTIA;
-            sensitivity = Constants.CD_SENS_LOW;
+        neg_inertia_scalar = Constants.CD_NEG_INERTIA;
+        sensitivity = Constants.CD_SENS_LOW;
+        
+        if (wheel * neg_inertia > 0) {
+            neg_inertia_scalar = Constants.CD_NEG_INERTIA*1.66;
         } else {
-            if (wheel * neg_inertia > 0) {
-                neg_inertia_scalar = Constants.CD_NEG_INERTIA*1.66;
+            if (Math.abs(wheel) > 0.65) {
+                neg_inertia_scalar = Constants.CD_NEG_INERTIA*3.33;
             } else {
-                if (Math.abs(wheel) > 0.65) {
-                    neg_inertia_scalar = Constants.CD_NEG_INERTIA*3.33;
-                } else {
-                    neg_inertia_scalar = Constants.CD_NEG_INERTIA;
-                }
-            }
-            sensitivity = Constants.CD_SENS_HIGH; //lower is less sensitive
-
-            if (Math.abs(throttle) > 0.1) {
-                sensitivity = .9 - (.9 - sensitivity) / Math.abs(throttle);
+                neg_inertia_scalar = Constants.CD_NEG_INERTIA;
             }
         }
+        sensitivity = Constants.CD_SENS_HIGH; //lower is less sensitive
+
+        if (Math.abs(throttle) > 0.1) {
+            sensitivity = .9 - (.9 - sensitivity) / Math.abs(throttle);
+        }
+    
         //neg_inertia_scalar *= .4;
         double neg_inertia_power = neg_inertia * neg_inertia_scalar;
         if (Math.abs(throttle) >= 0.05 || quickTurn) {
@@ -112,27 +103,15 @@ public class Drivetrain {
 
         linear_power = throttle;
 
-        if ((!GryffinMath.isInBand(throttle, -0.2, 0.2) || !(GryffinMath.isInBand(wheel, -0.65, 0.65))) && quickTurn) {
+        if (quickTurn) {
             overPower = 1.0;
-            if (true) {
-                sensitivity = 1.0;
-            } else {
-                sensitivity = 1.0;
-            }
             sensitivity = 1.0;
             angular_power = wheel;
         } else {
             overPower = 0.0;
             angular_power = Math.abs(throttle) * wheel * sensitivity;
-        }
-
-        if(quickTurn) {
-            angular_power = angular_power;//GryffinMath.signedSquare(angular_power, 1);   //make turning less sensitive under quickturn
-            if(Math.abs(angular_power) >= .745) {
-            //    angular_power = 1.0*EagleMath.signum(angular_power);
-            }
-        } else {
-        	angular_power *= -Math.signum(linear_power);
+            
+            angular_power *= -Math.signum(linear_power);	// Car steering code. comment out to disable. 
         	//angular_power *= -1;
         }
         
