@@ -3,7 +3,9 @@ package com.gryffingear.y2017.systems;
 import com.gryffingear.y2017.config.Constants;
 import com.gryffingear.y2017.config.Ports;
 import com.gryffingear.y2017.utilities.GryffinMath;
-import com.gryffingear.y2017.utilities.NegativeInertiaAccumulator;
+import com.gryffingear.y2017.utilities.GryffinPIDController;
+import com.gryffingear.y2017.utilities.GryffinPIDOutput;
+
 import edu.wpi.first.wpilibj.Compressor;
 
 public class SuperSystem {
@@ -16,7 +18,8 @@ public class SuperSystem {
 	public Feeder feed = null;
 	public Compressor compressor = null;
 	public Climber climb = null;
-	
+	public GryffinPIDController visionPid = null;
+	public GryffinPIDOutput visionOut = null;
 	
 	
 	private SuperSystem() {
@@ -42,6 +45,10 @@ public class SuperSystem {
 							Ports.Intake.HOPPER_SOLENOID);
 		
 		vision = GRIPVision.getInstance();
+		visionOut = new GryffinPIDOutput();
+		visionPid = new GryffinPIDController(Constants.SuperSystem.AUTO_AIM_KP, 0, 0, 
+											vision, visionOut);
+		
 		
 		feed = new Feeder(Ports.Feeder.AGITATOR_MOTOR_A,
 						  Ports.Feeder.AGITATOR_MOTOR_B,
@@ -103,22 +110,21 @@ public class SuperSystem {
 		
 		iOut = GryffinMath.thresholdOnOff(intakeInput, 0.20);
 		
+		visionPid.setEnabled(autoAim);
 		if (turretInput > .20) {
 			turrOut = .5;
 		} else if (turretInput < -.20) {
 			turrOut = -.5;
 		} else if(autoAim) {
-			double kP = Constants.SuperSystem.AUTO_AIM_KP;
-			turrOut = kP * vision.getX();
-		}
-		else {
+			turrOut = visionOut.get();
+		} else {
 			turrOut = 0;
 		}
 		
 		if (feedInput) {
 			aOut = -1;
 			fOut = -1;
-		}else if (feedOutput) {
+		} else if (feedOutput) {
 			aOut = -1;
 			fOut = 1;
 		} else {

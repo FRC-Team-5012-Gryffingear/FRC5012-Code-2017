@@ -2,9 +2,11 @@ package com.gryffingear.y2017.systems;
 
 import com.gryffingear.y2017.utilities.GryffinMath;
 
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
-public class GRIPVision {
+public class GRIPVision implements PIDSource{
 	
 	private static GRIPVision instance = null;
 
@@ -58,12 +60,13 @@ public class GRIPVision {
 		double[] cy = table.getNumberArray("centerY", defaultValue);
 		double[] ar = table.getNumberArray("area", defaultValue);
 
-		
-		if (cx.length > 0 && cx != null) {
-
-			x = (cx[0] - 320);
-			y = (cy[0] - 240);
-			area = ar[0];
+		if(cx != null) {	//First check if null
+			if (cx.length > 0) { // then check if length is not zero
+	
+				x = (cx[0] - 320);
+				y = (cy[0] - 240);
+				area = ar[0];
+			}
 		}
 	}
 	
@@ -74,6 +77,24 @@ public class GRIPVision {
 	 */
 	public double getYaw() {
 		return GryffinMath.visionXToAngle(getX());
+	}
+
+	@Override
+	public void setPIDSourceType(PIDSourceType pidSource) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public PIDSourceType getPIDSourceType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double pidGet() {
+		// TODO Auto-generated method stub
+		return this.getX();
 	}
 
 }

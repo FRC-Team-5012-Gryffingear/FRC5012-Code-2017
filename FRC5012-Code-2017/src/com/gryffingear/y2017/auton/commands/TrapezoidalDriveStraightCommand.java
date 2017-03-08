@@ -11,6 +11,13 @@ public class TrapezoidalDriveStraightCommand extends Command {
 	private double speed = 0.0;
 	private double angle = 0.0;
 	private double timeout = 0.0;
+
+	double timeStep = .05;
+	double maxA = 0.1;
+
+	ArrayList<Double> trajectory = new ArrayList();
+	
+	long startTime = 0;
 	
 	public TrapezoidalDriveStraightCommand(double speed, double angle, double timeout) {
 		
@@ -20,13 +27,10 @@ public class TrapezoidalDriveStraightCommand extends Command {
 		this.setTimeout(timeout);
 		
 
-		ArrayList<Double> trajectory = new ArrayList();
 		double v = speed;
 		//double speed = Math.abs(v);
 		double dir = Math.signum(v);
 		//double timeout = 10;
-		double timeStep = .05;
-		double maxA = 0.1;
 		
 		
 
@@ -65,7 +69,8 @@ public class TrapezoidalDriveStraightCommand extends Command {
 	protected void initialize() {
 		SuperSystem.getInstance().drivetrain.resetGyro();
 		
-		
+
+	    startTime = System.currentTimeMillis();
 	}
 	
 	protected boolean isFinished() {
@@ -74,9 +79,23 @@ public class TrapezoidalDriveStraightCommand extends Command {
 	
 	protected void execute() {
 		
+		double elapsedTime = ((double) (System.currentTimeMillis() - startTime)) / 1000.0;
+
+	    int frame = (int) (elapsedTime / timeStep);
+
+	    // read the current frame's output data
+
+	    double out = 0.0;
+	    if (frame < trajectory.size()) {
+	      out = trajectory.get(frame).doubleValue();
+	    } else {
+	      out = 0.0;
+	    }
+
+		
 		double p = 0.02;
 		double error = SuperSystem.getInstance().drivetrain.getYaw() - this.angle;
-		SuperSystem.getInstance().drivetrain.tankDrive(speed + (p * error), speed - (p * error));
+		SuperSystem.getInstance().drivetrain.tankDrive(out + (p * error), out - (p * error));
 		
 	}
 	
