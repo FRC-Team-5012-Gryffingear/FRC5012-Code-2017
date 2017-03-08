@@ -13,7 +13,7 @@ public class TrapezoidalDriveStraightCommand extends Command {
 	private double timeout = 0.0;
 
 	double timeStep = .05;
-	double maxA = 0.1;
+	double maxA = 0.2;
 
 	ArrayList<Double> trajectory = new ArrayList();
 	
@@ -29,12 +29,12 @@ public class TrapezoidalDriveStraightCommand extends Command {
 
 		double v = speed;
 		//double speed = Math.abs(v);
-		double dir = Math.signum(v);
+		
 		//double timeout = 10;
 		
 		
 
-	    double tempSpeed = (speed);
+	    double tempSpeed = Math.abs(v);
 
 	    // Generate profile
 
@@ -59,7 +59,7 @@ public class TrapezoidalDriveStraightCommand extends Command {
 
 	      }
 	      
-	      trajectory.add(new Double(out) * dir);
+	      trajectory.add(new Double(out * Math.signum(this.speed)));
 	      
 	    }
 	    
@@ -87,13 +87,13 @@ public class TrapezoidalDriveStraightCommand extends Command {
 
 	    double out = 0.0;
 	    if (frame < trajectory.size()) {
-	      out = trajectory.get(frame).doubleValue();
+	      out = trajectory.get(frame).doubleValue() * -Math.signum(this.speed);
 	    } else {
 	      out = 0.0;
 	    }
 
 		
-		double p = 0.02;
+		double p = -0.02;
 		double error = SuperSystem.getInstance().drivetrain.getYaw() - this.angle;
 		SuperSystem.getInstance().drivetrain.tankDrive(out + (p * error), out - (p * error));
 		

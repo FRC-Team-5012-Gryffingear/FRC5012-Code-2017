@@ -28,7 +28,7 @@ public class TurnToAngleCommand extends Command {
 	}
 
 	protected void execute() {
-		double p = 0.025;
+		double p = -0.038;
 		double error = SuperSystem.getInstance().drivetrain.getYaw() - this.angle;
 		SuperSystem.getInstance().drivetrain.tankDrive(p * error * speed, -p * error * speed);
 		

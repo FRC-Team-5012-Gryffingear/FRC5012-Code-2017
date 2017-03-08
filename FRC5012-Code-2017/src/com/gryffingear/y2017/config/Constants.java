@@ -9,9 +9,9 @@ public class Constants {
 	}
 
 
-    public static final double CD_SENS_HIGH         = 0.875;
+    public static final double CD_SENS_HIGH         = 1;
     public static final double CD_SENS_LOW          = 1.111;
-    public static final double CD_WHEEL_NONLIN_HIGH = .15;
+    public static final double CD_WHEEL_NONLIN_HIGH = 0.1;
     public static final double CD_WHEEL_NONLIN_LOW  = 0.8;
     public static final double CD_NEG_INERTIA       = 3.0;
     

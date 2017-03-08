@@ -83,10 +83,10 @@ public class Drivetrain {
         }
         sensitivity = Constants.CD_SENS_HIGH; //lower is less sensitive
 
-        if (Math.abs(throttle) > 0.1) {
+      /*  if (Math.abs(throttle) > 0.1) {
             sensitivity = .9 - (.9 - sensitivity) / Math.abs(throttle);
         }
-    
+    */
         //neg_inertia_scalar *= .4;
         double neg_inertia_power = neg_inertia * neg_inertia_scalar;
         if (Math.abs(throttle) >= 0.05 || quickTurn) {
@@ -111,7 +111,7 @@ public class Drivetrain {
             overPower = 0.0;
             angular_power = Math.abs(throttle) * wheel * sensitivity;
             
-            angular_power *= -Math.signum(linear_power);	// Car steering code. comment out to disable. 
+            //angular_power *= -Math.signum(linear_power);	// Car steering code. comment out to disable. 
         	//angular_power *= -1;
         }
         

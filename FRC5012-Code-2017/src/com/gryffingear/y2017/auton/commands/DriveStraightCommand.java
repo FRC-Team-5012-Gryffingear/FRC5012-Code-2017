@@ -28,7 +28,7 @@ public class DriveStraightCommand extends Command {
 	
 	protected void execute() {
 		
-		double p = 0.02;
+		double p = -0.025;
 		double error = SuperSystem.getInstance().drivetrain.getYaw() - this.angle;
 		SuperSystem.getInstance().drivetrain.tankDrive(speed + (p * error), speed - (p * error));
 		
