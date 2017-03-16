@@ -16,7 +16,7 @@ public class setHopperCommand extends Command {
 	}
 
 	protected boolean isFinished() {
-		return this.isTimedOut();
+		return true;
 	}
 
 	protected void execute() {
@@ -28,7 +28,6 @@ public class setHopperCommand extends Command {
 	}
 
 	protected void interrupted() {
-		SuperSystem.getInstance().intake.setHopper(false);
 	}
 
 }

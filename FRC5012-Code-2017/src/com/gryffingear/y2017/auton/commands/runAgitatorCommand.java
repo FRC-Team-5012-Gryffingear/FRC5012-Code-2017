@@ -7,20 +7,19 @@ public class runAgitatorCommand extends Command{
 	private double speed = 0.0;
 	private double timeout = 0.0;
 	
-	public runAgitatorCommand(double speed, double timeout) {
+	public runAgitatorCommand(double speed) {
 		
 		this.speed = speed;
-		this.setTimeout(timeout);
 		
 		
 	}
 	protected void initialize() {
-		SuperSystem.getInstance().feed.runAgitator(speed);
-		SuperSystem.getInstance().feed.runFeeder(speed);
+		SuperSystem.getInstance().feed.runAgitator(-speed);
+		SuperSystem.getInstance().feed.runFeeder(-speed);
 	}
 
 	protected boolean isFinished() {
-		return this.isTimedOut();
+		return true;
 	}
 
 	protected void execute() {
@@ -28,12 +27,8 @@ public class runAgitatorCommand extends Command{
 	}
 
 	protected void end() {
-		SuperSystem.getInstance().feed.runAgitator(0);
-		SuperSystem.getInstance().feed.runFeeder(0);
 	}
 
 	protected void interrupted() {
-		SuperSystem.getInstance().feed.runAgitator(0);
-		SuperSystem.getInstance().feed.runFeeder(0);
 	}
 }

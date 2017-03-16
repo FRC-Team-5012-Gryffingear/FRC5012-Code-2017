@@ -1,23 +1,21 @@
 
 package com.gryffingear.robot;
 
+import com.gryffingear.autonomous.ShootGearAuton;
 import com.gryffingear.autonomous.TestAuton;
 import com.gryffingear.y2017.config.Ports;
 import com.gryffingear.y2017.systems.SuperSystem;
-import com.gryffingear.y2017.systems.Drivetrain;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -104,7 +102,7 @@ public class Robot extends IterativeRobot {
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
-		currAuton = new TestAuton();
+		currAuton = new ShootGearAuton();;
 		Scheduler.getInstance().add(currAuton);
 		Scheduler.getInstance().enable();
 	}
@@ -145,8 +143,8 @@ public class Robot extends IterativeRobot {
 
 		bot.operate(gamepad.getRawAxis(1), 
 					gamepad.getRawAxis(1) > .2,
-					gamepad.getRawButton(2),
-					gamepad.getRawAxis(3),
+					gamepad.getRawButton(3),
+					gamepad.getRawAxis(2),
 					gamepad.getRawButton(9),
 					gamepad.getRawButton(7),
 					gamepad.getRawButton(1),

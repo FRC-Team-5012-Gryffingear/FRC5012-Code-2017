@@ -9,11 +9,10 @@ public class IntakeCommand extends Command {
 	private double speed = 0.0;
 	private double timeout = 0.0;
 	
-	public IntakeCommand(boolean state, double speed, double timeout ) {
+	public IntakeCommand(boolean state, double speed) {
 		
 		this.state = state;
 		this.speed = speed;
-		this.setTimeout(timeout);
 	}
 
 	protected void initialize() {
@@ -22,7 +21,7 @@ public class IntakeCommand extends Command {
 	}
 
 	protected boolean isFinished() {
-		return this.isTimedOut();
+		return true;
 	}
 
 	protected void execute() {
@@ -30,12 +29,9 @@ public class IntakeCommand extends Command {
 	}
 
 	protected void end() {
-		SuperSystem.getInstance().intake.setIntake(false);
-		SuperSystem.getInstance().intake.runIntake(0.0);
 	}
 
 	protected void interrupted() {
-		SuperSystem.getInstance().intake.setIntake(false);
-		SuperSystem.getInstance().intake.runIntake(0.0);
+		
 	}
 }

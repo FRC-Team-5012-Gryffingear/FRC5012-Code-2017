@@ -24,8 +24,8 @@ public class Feeder {
 	}
 
 	public void runAgitator(double agitatorv) {
-		agitatorMotorA.set(-agitatorv);
-		agitatorMotorB.set(agitatorv);
+		agitatorMotorA.set(agitatorv);
+		agitatorMotorB.set(-agitatorv);
 	}
 
 	private CANTalon configureTalon(CANTalon in, CANTalon.TalonControlMode mode, boolean brakeState, double rampRate) {

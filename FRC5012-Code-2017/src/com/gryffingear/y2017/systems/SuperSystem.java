@@ -122,10 +122,10 @@ public class SuperSystem {
 		}
 		
 		if (feedInput) {
-			aOut = -1;
+			aOut = -.75;
 			fOut = -1;
 		} else if (feedOutput) {
-			aOut = -1;
+			aOut = -.75;
 			fOut = 1;
 		} else {
 			aOut = 0;
@@ -134,8 +134,8 @@ public class SuperSystem {
 		
 		
 		if (shooterInput) {
-			sOut = 1;
-			psOut = -1;
+			sOut = .8;
+			psOut = -.8;
 		} else {
 			sOut = 0;
 			psOut = 0;
@@ -145,7 +145,7 @@ public class SuperSystem {
 		intake.setIntake(ipOut);
 		intake.setHopper(hpOut);
 		
-		shoot.runTurret(turrOut);
+		shoot.runTurret(-turrOut);
 		shoot.runShooter(sOut, psOut);
 		
 		feed.runAgitator(aOut);

@@ -8,21 +8,20 @@ public class runShooterCommand extends Command{
 	private double shooterspeed = 0.0;
 	private double preshooterspeed = 0.0;
 	private double timeout = 0.0;
-	public runShooterCommand(double shooterspeed, double preshooterspeed, double timeout) {
+	public runShooterCommand(double shooterspeed, double preshooterspeed) {
 	
 		this.shooterspeed = shooterspeed;
 		this.preshooterspeed = preshooterspeed;
-		this.setTimeout(timeout);
 		
 		
 	}
 
 	protected void initialize() {
-		SuperSystem.getInstance().shoot.runShooter(shooterspeed, preshooterspeed);
+		SuperSystem.getInstance().shoot.runShooter(shooterspeed, -preshooterspeed);
 	}
 
 	protected boolean isFinished() {
-		return this.isTimedOut();
+		return true;
 	}
 
 	protected void execute() {
@@ -30,11 +29,9 @@ public class runShooterCommand extends Command{
 	}
 
 	protected void end() {
-		SuperSystem.getInstance().shoot.runShooter(0, 0);
 	}
 
 	protected void interrupted() {
-		SuperSystem.getInstance().shoot.runShooter(0, 0);
 	}
 
 }
