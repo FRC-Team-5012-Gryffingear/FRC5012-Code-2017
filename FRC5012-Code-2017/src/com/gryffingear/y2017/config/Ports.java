@@ -26,40 +26,33 @@ public class Ports {
 		
 	}
 	
-	public static class Intake { 
+	public static class UtilityArm { 
 		
-		public static int INTAKE_MOTOR = 10;
-		public static int INTAKE_SOLENOID = 1;
-		
-		public static int HOPPER_SOLENOID =  0;
+		public static int INTAKE_MOTOR = 6;
+		public static int ARM_ENCODER = 4;
+		public static int ARM_MOTOR = 11;
 		
 	}
 	
 	public static class Shooter {
 		
 		public static int SHOOTER_MOTOR = 8;
-		public static int SHOOTER_ENC_PORT = 3;
 		
 		public static int PRESHOOTER_MOTOR = 9;
 		
-		public static int TURRET_MOTOR = 6;
-		public static int TURRET_ENCODER = 4;
-		public static int TURRET_BUMP_A_PORT = 0;
-		public static int TURRET_BUMP_B_PORT = 1;
-	
 	}
 	
 	public static class Feeder {
 		
 		public static int AGITATOR_MOTOR_A = 12;
-		public static int AGITATOR_MOTOR_B = 13;
+		public static int AGITATOR_MOTOR_B = 15;
 		
 		public static int FEEDER_MOTOR = 7;
 	}
 	
 	public static class Climber {
 		
-		public static int CLIMBER_MOTOR = 11;
+		public static int CLIMBER_MOTOR = 12;
 		public static int CLIMBER_BUMP_PORT = 2;
 	}
 	

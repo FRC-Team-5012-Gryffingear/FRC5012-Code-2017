@@ -1,7 +1,6 @@
 
 package com.gryffingear.robot;
 
-import com.gryffingear.autonomous.ShootGearAuton;
 import com.gryffingear.autonomous.TestAuton;
 import com.gryffingear.y2017.config.Ports;
 import com.gryffingear.y2017.systems.SuperSystem;
@@ -61,11 +60,15 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 
+		
+		
 		if (currAuton != null) {
 			System.out.println("[STATUS] Auton was running at this time. Cancelling...");
 			currAuton.cancel();
 			currAuton = null;
 		}
+		
+		
 	}
 
 	@Override
@@ -78,6 +81,12 @@ public class Robot extends IterativeRobot {
 		System.out.println("Potentiometer Voltlage: " + pot.getVoltage());
 
 		System.out.println("Gyro: " + bot.drivetrain.getYaw());
+		
+		bot.utilityarm.printPosition();
+		
+		if (driverR.getRawButton(1)) {
+			bot.utilityarm.zeroArm();
+		}
 
 	}
 
@@ -102,7 +111,7 @@ public class Robot extends IterativeRobot {
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
-		currAuton = new ShootGearAuton();;
+		currAuton = new TestAuton();
 		Scheduler.getInstance().add(currAuton);
 		Scheduler.getInstance().enable();
 	}
@@ -138,17 +147,15 @@ public class Robot extends IterativeRobot {
 	//	bot.drive((driverL.getRawAxis(1)+driverR.getRawAxis(1))/2, 
 	//	(driverL.getRawAxis(1)-driverR.getRawAxis(1))/2, false,
 		bot.drive(driverL.getRawAxis(1), 
-				driverR.getRawAxis(0), driverR.getRawButton(5),
-				  driverL.getRawButton(2));
+		driverR.getRawAxis(1),
+		  driverL.getRawButton(2));
 
-		bot.operate(gamepad.getRawAxis(1), 
-					gamepad.getRawAxis(1) > .2,
-					gamepad.getRawButton(3),
-					gamepad.getRawAxis(2),
-					gamepad.getRawButton(9),
+		bot.operate(gamepad.getRawAxis(1),
+					gamepad.getRawAxis(3),
 					gamepad.getRawButton(7),
 					gamepad.getRawButton(1),
-					gamepad.getRawButton(8));
+					gamepad.getRawButton(8),
+					gamepad.getRawButton(6));
 	}
 
 	/**
@@ -158,7 +165,8 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		LiveWindow.run();
 		
-		bot.shoot.testTurret();
-		bot.shoot.printPosition();
+		bot.utilityarm.printPosition();
+		
+
 	}
 }

@@ -28,4 +28,10 @@ public class Constants {
 		public static final double AUTO_AIM_TARGET_OFFSET = 0;
 		
 	}
+	
+	public static class UtilityArm {
+		public static final double UTILITY_ARM_STOW_POSITION = -1679;
+		public static final double UTILITY_ARM_SCORING_POSITION = -882;
+		public static final double UTILITY_ARM_GROUND_POSITION = 0;
+	}
 }

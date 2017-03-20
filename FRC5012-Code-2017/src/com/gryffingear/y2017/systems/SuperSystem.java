@@ -13,7 +13,7 @@ public class SuperSystem {
 	private static SuperSystem instance = null;
 	public Drivetrain drivetrain = null;
 	public Shooter shoot = null;
-	public Intake intake = null;
+	public Utilityarm utilityarm = null;
 	public GRIPVision vision = null;
 	public Feeder feed = null;
 	public Compressor compressor = null;
@@ -33,16 +33,11 @@ public class SuperSystem {
 							   Ports.Drivetrain.DRIVE_GYRO_PORT);
 
 		shoot = new Shooter(Ports.Shooter.SHOOTER_MOTOR, 
-							Ports.Shooter.SHOOTER_ENC_PORT, 
-							Ports.Shooter.PRESHOOTER_MOTOR,
-							Ports.Shooter.TURRET_MOTOR, 
-							Ports.Shooter.TURRET_ENCODER,
-							Ports.Shooter.TURRET_BUMP_A_PORT,
-							Ports.Shooter.TURRET_BUMP_B_PORT);
+							Ports.Shooter.PRESHOOTER_MOTOR);
 
-		intake = new Intake(Ports.Intake.INTAKE_MOTOR, 
-							Ports.Intake.INTAKE_SOLENOID,
-							Ports.Intake.HOPPER_SOLENOID);
+		utilityarm = new Utilityarm(Ports.UtilityArm.INTAKE_MOTOR,
+									Ports.UtilityArm.ARM_MOTOR,
+									Ports.UtilityArm.ARM_ENCODER);
 		
 		vision = GRIPVision.getInstance();
 		visionOut = new GryffinPIDOutput();
@@ -64,8 +59,8 @@ public class SuperSystem {
 		
 	}
 
-	public void drive(double throttle,
-					  double turning, boolean quickturn,
+	public void drive(double leftIn,
+					  double rightIn,
 					  boolean climberIn) {
 		
 /*
@@ -81,27 +76,21 @@ public class SuperSystem {
 		}
 			
 		climb.Climb(-cOut);
-//		drivetrain.tankDrive(throttle + turning, throttle - turning);
+		drivetrain.tankDrive(leftIn, rightIn);
 
-		drivetrain.cheesyDrive(turning, throttle, quickturn);
+//		drivetrain.cheesyDrive(turning, throttle, quickturn);
 	}
 
 	public void operate(double intakeInput, //left joy up/down
-						boolean intakePos, //right bumper
-						boolean hopperPos, // A
-						double turretInput, // right joy up/down
-						boolean autoAim, // select
+						double utilityArmInput,
 						boolean feedInput, // Left Trigger
 						boolean feedOutput, // X
-						boolean shooterInput) {//Right trigger 
-		
-		vision.update();
+						boolean shooterInput,
+						boolean negativeshooterInput) {//Right trigger 
 
 		double iOut = 0;
-		boolean ipOut = intakePos;
-		boolean hpOut = !hopperPos;
+		double uaOut = 0;
 		
-		double turrOut = 0;
 		double sOut = 0;
 		double psOut = 0;
 		
@@ -110,16 +99,15 @@ public class SuperSystem {
 		
 		iOut = GryffinMath.thresholdOnOff(intakeInput, 0.20);
 		
-		visionPid.setEnabled(autoAim);
-		if (turretInput > .20) {
-			turrOut = .5;
-		} else if (turretInput < -.20) {
-			turrOut = -.5;
-		} else if(autoAim) {
-			turrOut = visionOut.get();
+	
+		if (utilityArmInput > .20) {
+			uaOut = 1;
+		} else if (utilityArmInput < -.20) {
+			uaOut = -1;
 		} else {
-			turrOut = 0;
+			uaOut = 0;
 		}
+	
 		
 		if (feedInput) {
 			aOut = -.75;
@@ -134,24 +122,22 @@ public class SuperSystem {
 		
 		
 		if (shooterInput) {
-			sOut = .8;
+			sOut = 1;
 			psOut = -.8;
 		} else {
 			sOut = 0;
 			psOut = 0;
 		}
 
-		intake.runIntake(iOut);
-		intake.setIntake(ipOut);
-		intake.setHopper(hpOut);
+		utilityarm.runIntake(iOut);
+		utilityarm.setIntake(uaOut);
+		utilityarm.printPosition();
 		
-		shoot.runTurret(-turrOut);
 		shoot.runShooter(sOut, psOut);
 		
 		feed.runAgitator(aOut);
 		feed.runFeeder(fOut);
 		
-		shoot.printPosition();
 		
 	}
 
