@@ -13,13 +13,13 @@ public class SuperSystem {
 	private static SuperSystem instance = null;
 	public Drivetrain drivetrain = null;
 	public Shooter shoot = null;
-	public Utilityarm utilityarm = null;
-	public GRIPVision vision = null;
+	public UtilityArm utilityarm = null;
+//	public GRIPVision vision = null;
 	public Feeder feed = null;
 	public Compressor compressor = null;
 	public Climber climb = null;
-	public GryffinPIDController visionPid = null;
-	public GryffinPIDOutput visionOut = null;
+//	public GryffinPIDController visionPid = null;
+//	public GryffinPIDOutput visionOut = null;
 	
 	
 	private SuperSystem() {
@@ -35,15 +35,15 @@ public class SuperSystem {
 		shoot = new Shooter(Ports.Shooter.SHOOTER_MOTOR, 
 							Ports.Shooter.PRESHOOTER_MOTOR);
 
-		utilityarm = new Utilityarm(Ports.UtilityArm.INTAKE_MOTOR,
+		utilityarm = new UtilityArm(Ports.UtilityArm.INTAKE_MOTOR,
 									Ports.UtilityArm.ARM_MOTOR,
 									Ports.UtilityArm.ARM_ENCODER);
-		
-		vision = GRIPVision.getInstance();
-		visionOut = new GryffinPIDOutput();
-		visionPid = new GryffinPIDController(Constants.SuperSystem.AUTO_AIM_KP, 0, 0, 
-											vision, visionOut);
-		
+//		
+//		vision = GRIPVision.getInstance();
+//		visionOut = new GryffinPIDOutput();
+//		visionPid = new GryffinPIDController(Constants.SuperSystem.AUTO_AIM_KP, 0, 0, 
+//											vision, visionOut);
+//		
 		
 		feed = new Feeder(Ports.Feeder.AGITATOR_MOTOR_A,
 						  Ports.Feeder.AGITATOR_MOTOR_B,
