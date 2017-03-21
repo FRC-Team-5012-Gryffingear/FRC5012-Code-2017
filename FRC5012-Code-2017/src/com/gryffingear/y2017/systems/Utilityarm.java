@@ -5,13 +5,15 @@ import com.gryffingear.y2017.utilities.GryffinMath;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 
-public class Utilityarm {
+public class UtilityArm {
 	
 	private CANTalon intakeMotor = null;
 	private CANTalon utilityArmMotor = null;
-	private AnalogInput intakeEnc = null;
+	
+	private boolean hasZeroed = false;
+	
 
-	public Utilityarm(int im, int uam, int uae) {
+	public UtilityArm(int im, int uam, int uae) {
 		
 		intakeMotor = configureTalon(new CANTalon(im), CANTalon.TalonControlMode.PercentVbus, false, 0);
 		utilityArmMotor = configureTalon(new CANTalon(uam), CANTalon.TalonControlMode.PercentVbus, false, 0);
@@ -20,7 +22,7 @@ public class Utilityarm {
 		utilityArmMotor.setEncPosition(absolutePosition);
 		utilityArmMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
 		utilityArmMotor.reverseSensor(true);
-		utilityArmMotor.configNominalOutputVoltage(0.0, 5.0);
+		utilityArmMotor.configNominalOutputVoltage(0.0, 0.0);
 		utilityArmMotor.configPeakOutputVoltage(5.0, -5.0);
 		utilityArmMotor.setAllowableClosedLoopErr(0);
 		utilityArmMotor.setProfile(0);
@@ -40,6 +42,11 @@ public class Utilityarm {
 		utilityArmMotor.set(utilityArmV);
 	}
 	
+	public void setPercentV(double v) {
+		utilityArmMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		utilityArmMotor.set(v);
+	}
+	
 	public void setPosition(double position) {
 		System.out.println("setpoint: " + position);
 		utilityArmMotor.changeControlMode(CANTalon.TalonControlMode.Position);
@@ -47,8 +54,12 @@ public class Utilityarm {
 	}
 	
 	public void zeroArm() {
-		
+		hasZeroed = true;
 		utilityArmMotor.setEncPosition(0);
+	}
+	
+	public boolean getZeroed() {
+		return hasZeroed;
 	}
 	
 	public void printPosition() {
