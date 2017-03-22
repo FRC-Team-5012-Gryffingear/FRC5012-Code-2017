@@ -70,10 +70,11 @@ public class SuperSystem {
 		double cOut = 0;
 		
 		if (climberIn) {
-			cOut = .8;
+			cOut = 1;
 		} else {
 			cOut = 0;
 		}
+		
 			
 		climb.Climb(-cOut);
 		drivetrain.tankDrive(leftIn, rightIn);
@@ -81,12 +82,15 @@ public class SuperSystem {
 //		drivetrain.cheesyDrive(turning, throttle, quickturn);
 	}
 
+	double uaP = Constants.UtilityArm.UTILITY_ARM_GROUND_POSITION;
+
 	public void operate(double intakeInput, //left joy up/down
 						double utilityArmInput,
 						boolean feedInput, // Left Trigger
 						boolean feedOutput, // X
-						boolean shooterInput,
-						boolean negativeshooterInput) {//Right trigger 
+						boolean shooterInput,//Right Trigger
+						double uArmPositionInput,
+						boolean zeroArm) { //D-pad 
 
 		double iOut = 0;
 		double uaOut = 0;
@@ -101,11 +105,19 @@ public class SuperSystem {
 		
 	
 		if (utilityArmInput > .20) {
-			uaOut = 1;
-		} else if (utilityArmInput < -.20) {
 			uaOut = -1;
+		} else if (utilityArmInput < -.20) {
+			uaOut = 1;
 		} else {
 			uaOut = 0;
+		}
+		
+		if (uArmPositionInput == 0) {
+			uaP = Constants.UtilityArm.UTILITY_ARM_STOW_POSITION;
+		} else if (uArmPositionInput == 90) {
+			uaP = Constants.UtilityArm.UTILITY_ARM_SCORING_POSITION;
+		} else if (uArmPositionInput == 180) {
+			uaP = Constants.UtilityArm.UTILITY_ARM_GROUND_POSITION;
 		}
 	
 		
@@ -128,10 +140,17 @@ public class SuperSystem {
 			sOut = 0;
 			psOut = 0;
 		}
+		
+		if (zeroArm) {
+			SuperSystem.getInstance().utilityarm.zeroArm();
+		} else {
+			
+		}
 
 		utilityarm.runIntake(iOut);
-		utilityarm.setIntake(uaOut);
+		//utilityarm.setPercentV(uaOut);
 		utilityarm.printPosition();
+		utilityarm.setPosition(uaP);
 		
 		shoot.runShooter(sOut, psOut);
 		

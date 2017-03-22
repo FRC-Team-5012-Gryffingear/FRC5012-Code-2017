@@ -30,8 +30,8 @@ public class Constants {
 	}
 	
 	public static class UtilityArm {
-		public static final double UTILITY_ARM_STOW_POSITION = -1679;
-		public static final double UTILITY_ARM_SCORING_POSITION = -882;
-		public static final double UTILITY_ARM_GROUND_POSITION = 0;
+		public static final double UTILITY_ARM_STOW_POSITION = 2000;
+		public static final double UTILITY_ARM_SCORING_POSITION = 0;
+		public static final double UTILITY_ARM_GROUND_POSITION = -550;
 	}
 }

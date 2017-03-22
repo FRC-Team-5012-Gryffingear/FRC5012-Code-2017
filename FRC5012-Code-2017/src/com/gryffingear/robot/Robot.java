@@ -101,12 +101,22 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopPeriodic() {
+		System.out.println("Pov: " + gamepad.getPOV());
 		
+		SmartDashboard.putNumber("Pos: ", bot.utilityarm.getPosition());
+		SmartDashboard.putNumber("SetPoint: " , bot.utilityarm.getSetpoint());
 
-		bot.drive(driverL.getRawAxis(1), driverR.getRawAxis(1), driverL.getRawButton(2));
+		bot.drive(driverL.getRawAxis(1), 
+				  driverR.getRawAxis(1), 
+				  driverL.getRawButton(2));
 
-		bot.operate(gamepad.getRawAxis(1), gamepad.getRawAxis(3), gamepad.getRawButton(7), gamepad.getRawButton(1),
-				gamepad.getRawButton(8), gamepad.getRawButton(6));
+		bot.operate(gamepad.getRawAxis(1), 
+					gamepad.getRawAxis(3), 
+					gamepad.getRawButton(7), 
+					gamepad.getRawButton(1),
+					gamepad.getRawButton(8),
+					gamepad.getPOV(),
+					gamepad.getRawButton(9));
 	}
 
 	@Override
