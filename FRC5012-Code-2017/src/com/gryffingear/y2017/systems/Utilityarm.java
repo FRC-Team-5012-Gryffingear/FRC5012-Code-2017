@@ -21,13 +21,13 @@ public class UtilityArm {
 		int absolutePosition = utilityArmMotor.getPulseWidthPosition();
 		utilityArmMotor.setEncPosition(absolutePosition);
 		utilityArmMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
-		utilityArmMotor.reverseSensor(true);
-		utilityArmMotor.configNominalOutputVoltage(0.0, 0.0);
+		utilityArmMotor.reverseSensor(false);
+		utilityArmMotor.configNominalOutputVoltage(0.0, .50);
 		utilityArmMotor.configPeakOutputVoltage(5.0, -5.0);
 		utilityArmMotor.setAllowableClosedLoopErr(0);
 		utilityArmMotor.setProfile(0);
 		utilityArmMotor.setF(0.0);
-		utilityArmMotor.setP(0.1);
+		utilityArmMotor.setP(2.5);
 		utilityArmMotor.setI(0.0);
 		utilityArmMotor.setD(0.0);
 	}
@@ -66,6 +66,14 @@ public class UtilityArm {
 		System.out.println("Arm pos: " + utilityArmMotor.getEncPosition());
 	}
 	
+	
+	public double getPosition() {
+		return utilityArmMotor.getEncPosition();
+	}
+	
+	public double getSetpoint() {
+		return utilityArmMotor.getSetpoint();
+	}
 	private CANTalon configureTalon(CANTalon in, CANTalon.TalonControlMode mode, boolean brakeState, double rampRate) {
 		in.changeControlMode(mode);
 		in.setVoltageRampRate(rampRate);
