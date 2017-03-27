@@ -28,9 +28,9 @@ public class Ports {
 	
 	public static class UtilityArm { 
 		
-		public static int INTAKE_MOTOR = 6;
+		public static int INTAKE_MOTOR = 7;
 		public static int ARM_ENCODER = 4;
-		public static int ARM_MOTOR = 11;
+		public static int ARM_MOTOR = 6;
 		
 	}
 	
@@ -47,12 +47,12 @@ public class Ports {
 		public static int AGITATOR_MOTOR_A = 12;
 		public static int AGITATOR_MOTOR_B = 15;
 		
-		public static int FEEDER_MOTOR = 7;
+		public static int FEEDER_MOTOR = 10;
 	}
 	
 	public static class Climber {
 		
-		public static int CLIMBER_MOTOR = 12;
+		public static int CLIMBER_MOTOR = 11;
 		public static int CLIMBER_BUMP_PORT = 2;
 	}
 	

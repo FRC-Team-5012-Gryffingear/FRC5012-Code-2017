@@ -7,25 +7,21 @@ public class ZeroArmIfNotZeroedCommand extends Command {
 
 	private double speed = 0.0;
 	private double angle = 0.0;
-	private double timeout = 0.0;
+	private double timeout = 1.5;
 	
 	public ZeroArmIfNotZeroedCommand() {
 		
-		this.timeout = 1.0;
+		this.timeout = 1.5;
 		this.setTimeout(timeout);
 		
 	}
 	
 	protected void initialize() {
-		if(SuperSystem.getInstance().utilityarm.getZeroed()) {
-			SuperSystem.getInstance().utilityarm.setPercentV(0);
-		} else {
-			SuperSystem.getInstance().utilityarm.setPercentV(0.25);
-		}
+			SuperSystem.getInstance().utilityarm.setPercentV(-0.4);
 	}
 	
 	protected boolean isFinished() {
-		return this.isTimedOut() || SuperSystem.getInstance().utilityarm.getZeroed();
+		return this.isTimedOut();
 	}
 	
 	protected void execute() {
@@ -34,9 +30,7 @@ public class ZeroArmIfNotZeroedCommand extends Command {
 	
 	protected void end() {
 		SuperSystem.getInstance().utilityarm.setPercentV(0);
-		if(!SuperSystem.getInstance().utilityarm.getZeroed()) {
 			SuperSystem.getInstance().utilityarm.zeroArm();;
-		}
 	}
 	
 	protected void interrupted() {

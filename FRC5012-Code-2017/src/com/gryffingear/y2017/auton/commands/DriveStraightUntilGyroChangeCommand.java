@@ -1,21 +1,21 @@
 package com.gryffingear.y2017.auton.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import com.gryffingear.y2017.systems.SuperSystem;
 
-public class DriveStraightCommand extends Command {
+import edu.wpi.first.wpilibj.command.Command;
+
+public class DriveStraightUntilGyroChangeCommand extends Command{
 
 	private double speed = 0.0;
 	private double angle = 0.0;
-	private double timeout = 0.0;
+	private double timeout = 8.0;
 	
-	public DriveStraightCommand(double speed, double angle, double timeout) {
+	public DriveStraightUntilGyroChangeCommand(double speed, double angle) {
 		
 		this.speed = -speed;
 		this.angle = 0.0;
 		this.timeout = timeout;
 		this.setTimeout(timeout);
-		
 	}
 	
 	protected void initialize() {
@@ -23,7 +23,8 @@ public class DriveStraightCommand extends Command {
 	}
 	
 	protected boolean isFinished() {
-		return this.isTimedOut();
+		return (Math.abs(SuperSystem.getInstance().drivetrain.getRawRate()) > 7 || this.isTimedOut());
+		
 	}
 	
 	protected void execute() {
@@ -35,12 +36,11 @@ public class DriveStraightCommand extends Command {
 	}
 	
 	protected void end() {
-		
+		SuperSystem.getInstance().drivetrain.tankDrive(0.0, 0.0);
 	}
 	
 	protected void interrupted() {
 		SuperSystem.getInstance().drivetrain.tankDrive(0.0, 0.0);
 	}
-	
 	
 }

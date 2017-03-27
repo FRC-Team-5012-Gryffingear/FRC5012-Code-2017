@@ -1,6 +1,7 @@
 
 package com.gryffingear.robot;
 
+import com.gryffingear.autonomous.CenterGearAuton;
 import com.gryffingear.autonomous.TestAuton;
 import com.gryffingear.y2017.config.Ports;
 import com.gryffingear.y2017.systems.SuperSystem;
@@ -59,14 +60,12 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().disable();
+		
 
-		currAuton = new TestAuton();
+		//currAuton = new TestAuton();
+		currAuton = new CenterGearAuton();
+		
 		SmartDashboard.putString("Currently Selected Auton", currAuton.toString());
-
-		System.out.println("Potentiometer Voltlage: " + pot.getVoltage());
-
-		System.out.println("Gyro: " + bot.drivetrain.getYaw());
-
 		bot.utilityarm.printPosition();
 
 		if (driverR.getRawButton(1)) {
@@ -80,7 +79,9 @@ public class Robot extends IterativeRobot {
 
 		cancelAuton();
 
-		currAuton = new TestAuton();
+		//currAuton = new TestAuton();
+		currAuton = new CenterGearAuton();
+		
 		Scheduler.getInstance().add(currAuton);
 		Scheduler.getInstance().enable();
 	}
@@ -101,7 +102,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopPeriodic() {
-		System.out.println("Pov: " + gamepad.getPOV());
+		//System.out.println("Pov: " + gamepad.getPOV());
 		
 		SmartDashboard.putNumber("Pos: ", bot.utilityarm.getPosition());
 		SmartDashboard.putNumber("SetPoint: " , bot.utilityarm.getSetpoint());
@@ -110,13 +111,14 @@ public class Robot extends IterativeRobot {
 				  driverR.getRawAxis(1), 
 				  driverL.getRawButton(2));
 
-		bot.operate(gamepad.getRawAxis(1), 
-					gamepad.getRawAxis(3), 
+		bot.operate(gamepad.getRawAxis(3), 
+					gamepad.getRawAxis(2), 
 					gamepad.getRawButton(7), 
 					gamepad.getRawButton(1),
 					gamepad.getRawButton(8),
 					gamepad.getPOV(),
-					gamepad.getRawButton(9));
+					gamepad.getRawButton(9),
+					gamepad.getRawAxis(1));
 	}
 
 	@Override

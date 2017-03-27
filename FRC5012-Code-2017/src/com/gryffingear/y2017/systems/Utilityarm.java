@@ -22,12 +22,10 @@ public class UtilityArm {
 		utilityArmMotor.setEncPosition(absolutePosition);
 		utilityArmMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
 		utilityArmMotor.reverseSensor(false);
-		utilityArmMotor.configNominalOutputVoltage(0.0, .50);
-		utilityArmMotor.configPeakOutputVoltage(5.0, -5.0);
 		utilityArmMotor.setAllowableClosedLoopErr(0);
 		utilityArmMotor.setProfile(0);
 		utilityArmMotor.setF(0.0);
-		utilityArmMotor.setP(2.5);
+		utilityArmMotor.setP(0.004);
 		utilityArmMotor.setI(0.0);
 		utilityArmMotor.setD(0.0);
 	}
@@ -36,21 +34,20 @@ public class UtilityArm {
 		intakeMotor.set(-intakeV);
 	}
 	
-	double pos = 0;
-	public void setIntake(double utilityArmV) {
-		pos = utilityArmMotor.getEncPosition();
-		utilityArmMotor.set(utilityArmV);
-	}
-	
 	public void setPercentV(double v) {
 		utilityArmMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 		utilityArmMotor.set(v);
 	}
 	
+	
+	
 	public void setPosition(double position) {
+		double kp = -1.5;
+		double error = this.getPosition() - position;
+		
 		System.out.println("setpoint: " + position);
-		utilityArmMotor.changeControlMode(CANTalon.TalonControlMode.Position);
-		utilityArmMotor.set(position);
+		utilityArmMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		utilityArmMotor.set(kp * error);
 	}
 	
 	public void zeroArm() {
@@ -63,12 +60,12 @@ public class UtilityArm {
 	}
 	
 	public void printPosition() {
-		System.out.println("Arm pos: " + utilityArmMotor.getEncPosition());
+		System.out.println("Arm pos: " + this.getPosition());
 	}
 	
 	
 	public double getPosition() {
-		return utilityArmMotor.getEncPosition();
+		return utilityArmMotor.getPosition();
 	}
 	
 	public double getSetpoint() {
