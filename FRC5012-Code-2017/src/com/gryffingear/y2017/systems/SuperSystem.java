@@ -3,8 +3,7 @@ package com.gryffingear.y2017.systems;
 import com.gryffingear.y2017.config.Constants;
 import com.gryffingear.y2017.config.Ports;
 import com.gryffingear.y2017.utilities.GryffinMath;
-import com.gryffingear.y2017.utilities.GryffinPIDController;
-import com.gryffingear.y2017.utilities.GryffinPIDOutput;
+import com.gryffingear.y2017.utilities.LedOutput;
 
 import edu.wpi.first.wpilibj.Compressor;
 
@@ -20,6 +19,9 @@ public class SuperSystem {
 	public Climber climb = null;
 //	public GryffinPIDController visionPid = null;
 //	public GryffinPIDOutput visionOut = null;
+	
+	LedOutput ARM_LED_A;
+	LedOutput ARM_LED_B;
 	
 	
 	private SuperSystem() {
@@ -37,7 +39,9 @@ public class SuperSystem {
 
 		utilityarm = new UtilityArm(Ports.UtilityArm.INTAKE_MOTOR,
 									Ports.UtilityArm.ARM_MOTOR,
-									Ports.UtilityArm.ARM_ENCODER);
+									Ports.UtilityArm.ARM_ENCODER,
+									Ports.UtilityArm.ARM_BUMP_SWITCH,
+									Ports.UtilityArm.ARM_LIMIT_SWITCH);
 //		
 //		vision = GRIPVision.getInstance();
 //		visionOut = new GryffinPIDOutput();
@@ -49,8 +53,14 @@ public class SuperSystem {
 						  Ports.Feeder.AGITATOR_MOTOR_B,
 						  Ports.Feeder.FEEDER_MOTOR);
 		
-		climb = new Climber(Ports.Climber.CLIMBER_MOTOR,
+		climb = new Climber(Ports.Climber.CLIMBER_MOTOR_A,
+							Ports.Climber.CLIMBER_MOTOR_B,
 							Ports.Climber.CLIMBER_BUMP_PORT);
+		
+		ARM_LED_A = new LedOutput(Ports.UtilityArm.ARM_LED_A,
+								  Ports.Pneumatics.PCM_CAN_ID);
+		ARM_LED_B = new LedOutput(Ports.UtilityArm.ARM_LED_B,
+								  Ports.Pneumatics.PCM_CAN_ID);
 		
 		compressor = new Compressor();
 		compressor.start();
@@ -102,7 +112,7 @@ public class SuperSystem {
 		double fOut = 0;
 		double aOut = 0;
 		
-		iOut = GryffinMath.thresholdOnOff(intakeInput, 0.20);
+		//iOut = GryffinMath.thresholdOnOff(intakeInput, 0.20);
 		
 //	
 //		if (utilityArmInput > .20) {
@@ -123,43 +133,68 @@ public class SuperSystem {
 			uaP = Constants.UtilityArm.UTILITY_ARM_SHUTTLING_POSITION ;
 		}
 	
+//		
+//		if (feedInput) {
+//			aOut = -.75;
+//			fOut = -1;
+//		} else if (feedOutput) {
+//			aOut = -.75;
+//			fOut = 1;
+//		} else {
+//			aOut = 0;
+//			fOut = 0;
+//		}
 		
-		if (feedInput) {
-			aOut = -.75;
-			fOut = -1;
-		} else if (feedOutput) {
-			aOut = -.75;
-			fOut = 1;
-		} else {
-			aOut = 0;
-			fOut = 0;
-		}
 		
-		
-		if (shooterInput) {
-			sOut = 1;
-			psOut = -.8;
-		} else {
-			sOut = 0;
-			psOut = 0;
-		}
-		
-		if (zeroArm) {
-			//SuperSystem.getInstance().utilityarm.zeroArm();
-		} else {
+//		if (shooterInput) {
+//			sOut = 1;
+//			psOut = -.8;
+//		} else {
+//			sOut = 0;
+//			psOut = 0;
+//		}
+//		
+//		if (zeroArm) {
+//			//SuperSystem.getInstance().utilityarm.zeroArm();
+//		} else {
+//			
+//		}
+
+
+		if(utilityarm.getBumpSwitch()){
+
+			if(iOut > 0.0) {
+				iOut = .1;
+			}
+			
+		}else if (intakeInput > .20) {
+			iOut = 1;
+		} else if (intakeInput < -.20){
+			iOut = -1;
+		}else {
+
+			ARM_LED_A.set(false);
+			ARM_LED_B.set(false);
 			
 		}
+		
+		boolean ledOut = utilityarm.getBumpSwitch();
+		
+		ARM_LED_A.set(ledOut);
+		ARM_LED_B.set(ledOut);
 
 		
 		utilityarm.runIntake(iOut);
 		//utilityarm.setPercentV(uaOut);
 		utilityarm.printPosition();
+		
 		utilityarm.setPosition(uaP + .365 * nudgeInput);
 		
 		shoot.runShooter(sOut, psOut);
 		
 		feed.runAgitator(aOut);
 		feed.runFeeder(fOut);
+		
 		
 		
 	}

@@ -5,17 +5,20 @@ import com.ctre.CANTalon;
 
 public class Climber {
 
-	private CANTalon climberMotor = null;
+	private CANTalon climberMotorA = null;
+	private CANTalon climberMotorB = null;
 	private DigitalInput climbSensor = null;
 
-	public Climber(int cm, int cs) {
+	public Climber(int cma, int cmb, int cs) {
 
-		climberMotor = configureTalon(new CANTalon(cm), CANTalon.TalonControlMode.PercentVbus, false, 0);
+		climberMotorA = configureTalon(new CANTalon(cma), CANTalon.TalonControlMode.PercentVbus, true, 0);
+		climberMotorB = configureTalon(new CANTalon(cmb), CANTalon.TalonControlMode.PercentVbus, true, 0);
 		climbSensor = new DigitalInput(cs);
 	}
 
 	public void Climb(double climberv) {
-		climberMotor.set(climberv);
+		climberMotorA.set(climberv);
+		climberMotorB.set(climberv);
 	}
 
 	public boolean getBump() {

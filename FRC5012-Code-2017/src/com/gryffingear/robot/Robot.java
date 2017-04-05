@@ -2,6 +2,7 @@
 package com.gryffingear.robot;
 
 import com.gryffingear.autonomous.CenterGearAuton;
+import com.gryffingear.autonomous.DriveStraightAuton;
 import com.gryffingear.autonomous.TestAuton;
 import com.gryffingear.y2017.config.Ports;
 import com.gryffingear.y2017.systems.SuperSystem;
@@ -77,10 +78,18 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 
+		
+		System.out.println("Pot Value: " + pot.getAverageVoltage());
 		cancelAuton();
+		
+		if(pot.getAverageVoltage() > 1) {
+			currAuton = new DriveStraightAuton();
+		} else if (pot.getAverageVoltage() < 1) {
+			currAuton = new CenterGearAuton();
+		} else {
+			
+		}
 
-		//currAuton = new TestAuton();
-		currAuton = new CenterGearAuton();
 		
 		Scheduler.getInstance().add(currAuton);
 		Scheduler.getInstance().enable();
