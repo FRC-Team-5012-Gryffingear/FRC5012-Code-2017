@@ -19,7 +19,7 @@ public class UtilityArm {
 	public UtilityArm(int im, int uam, int uae, int abs, int alm) {
 
 		intakeMotor = configureTalon(new CANTalon(im), CANTalon.TalonControlMode.PercentVbus, false, 0);
-		utilityArmMotor = configureTalon(new CANTalon(uam), CANTalon.TalonControlMode.PercentVbus, false, 0);
+		utilityArmMotor = configureTalon(new CANTalon(uam), CANTalon.TalonControlMode.PercentVbus, true, 0);
 		
 		armBumpSwitch = new DigitalInput(abs);
 		armLimitSwitch = new DigitalInput(alm);

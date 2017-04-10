@@ -28,17 +28,19 @@ public class Ports {
 	
 	public static class UtilityArm { 
 		
-		public static int INTAKE_MOTOR = 7;
+		public static int INTAKE_MOTOR = 8;
 		public static int ARM_ENCODER = 4;
-		public static int ARM_MOTOR = 8;
+		public static int ARM_MOTOR = 6;
 		
 		public static int ARM_BUMP_SWITCH = 0;
 		public static int ARM_LIMIT_SWITCH = 1;
 		
 		public static int ARM_LED_A = 0;
 		public static int ARM_LED_B = 1;
+		public static int ARM_LED_C = 2;
 		
 	}
+	
 	
 	public static class Shooter {
 		

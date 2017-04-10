@@ -22,6 +22,7 @@ public class SuperSystem {
 	
 	LedOutput ARM_LED_A;
 	LedOutput ARM_LED_B;
+	LedOutput ARM_LED_C;
 	
 	
 	private SuperSystem() {
@@ -60,6 +61,9 @@ public class SuperSystem {
 		ARM_LED_A = new LedOutput(Ports.UtilityArm.ARM_LED_A,
 								  Ports.Pneumatics.PCM_CAN_ID);
 		ARM_LED_B = new LedOutput(Ports.UtilityArm.ARM_LED_B,
+								  Ports.Pneumatics.PCM_CAN_ID);
+		
+		ARM_LED_C = new LedOutput(Ports.UtilityArm.ARM_LED_C,
 								  Ports.Pneumatics.PCM_CAN_ID);
 		
 		compressor = new Compressor();
@@ -161,27 +165,35 @@ public class SuperSystem {
 //		}
 
 
-		if(utilityarm.getBumpSwitch()){
-
-			if(iOut > 0.0) {
-				iOut = .1;
-			}
-			
-		}else if (intakeInput > .20) {
-			iOut = 1;
-		} else if (intakeInput < -.20){
-			iOut = -1;
-		}else {
-
-			ARM_LED_A.set(false);
-			ARM_LED_B.set(false);
+		 if (intakeInput < -.20){
+				iOut = -.5;
+		} else if (intakeInput > .20) {
+			iOut = .8;
+		} else {
+			iOut = 0;
 			
 		}
+		 
+		 if(utilityarm.getBumpSwitch()) {
+			 if(iOut > 0) {
+				 iOut = 0;
+			 }
+		 }
 		
-		boolean ledOut = utilityarm.getBumpSwitch();
-		
-		ARM_LED_A.set(ledOut);
-		ARM_LED_B.set(ledOut);
+		if (Math.abs(iOut) > .2) {
+			ARM_LED_A.blink(200);
+			ARM_LED_B.blink(200);
+			ARM_LED_C.blink(200);
+		} else {
+
+			boolean ledOut = utilityarm.getBumpSwitch();
+			
+			ARM_LED_A.set(ledOut);
+			ARM_LED_B.set(ledOut);
+			ARM_LED_C.set(ledOut);
+
+		}
+			
 
 		
 		utilityarm.runIntake(iOut);
@@ -198,6 +210,7 @@ public class SuperSystem {
 		
 		
 	}
+
 
 	public static SuperSystem getInstance() {
 

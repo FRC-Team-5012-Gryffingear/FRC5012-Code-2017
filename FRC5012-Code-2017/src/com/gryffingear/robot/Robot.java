@@ -82,15 +82,16 @@ public class Robot extends IterativeRobot {
 		System.out.println("Pot Value: " + pot.getAverageVoltage());
 		cancelAuton();
 		
-		if(pot.getAverageVoltage() > 1) {
-			currAuton = new DriveStraightAuton();
-		} else if (pot.getAverageVoltage() < 1) {
-			currAuton = new CenterGearAuton();
-		} else {
-			
-		}
+//		if(pot.getAverageVoltage() > 1) {
+//			currAuton = new DriveStraightAuton();
+//		} else if (pot.getAverageVoltage() < 1) {
+//			currAuton = new CenterGearAuton();
+//		} else {
+//			
+//		}
 
-		
+
+		currAuton = new CenterGearAuton();
 		Scheduler.getInstance().add(currAuton);
 		Scheduler.getInstance().enable();
 	}

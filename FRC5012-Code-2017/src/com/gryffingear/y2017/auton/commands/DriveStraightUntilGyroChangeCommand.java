@@ -23,13 +23,13 @@ public class DriveStraightUntilGyroChangeCommand extends Command{
 	}
 	
 	protected boolean isFinished() {
-		return (Math.abs(SuperSystem.getInstance().drivetrain.getRawRate()) > 7 || this.isTimedOut());
+		return (Math.abs(SuperSystem.getInstance().drivetrain.getRawRate()) > 9 || this.isTimedOut());
 		
 	}
 	
 	protected void execute() {
 		
-		double p = -0.025;
+		double p = -0.03;
 		double error = SuperSystem.getInstance().drivetrain.getYaw() - this.angle;
 		SuperSystem.getInstance().drivetrain.tankDrive(speed + (p * error), speed - (p * error));
 		
