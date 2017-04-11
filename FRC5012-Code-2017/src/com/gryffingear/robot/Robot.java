@@ -100,6 +100,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		
+		SuperSystem.getInstance().utilityarm.run();
 	}
 
 	@Override
