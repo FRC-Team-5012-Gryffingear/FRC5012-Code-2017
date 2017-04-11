@@ -1,6 +1,7 @@
 package com.gryffingear.y2017.systems;
 
 import com.ctre.CANTalon;
+import com.gryffingear.y2017.config.Constants;
 import com.gryffingear.y2017.config.Ports;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -45,19 +46,21 @@ public class UtilityArm {
 		utilityArmMotor.set(v);
 	}
 
+	double setpoint = Constants.UtilityArm.UTILITY_ARM_STOW_POSITION;
+	
 	public void setPosition(double position) {
+		this.setpoint = position;
+	}
+	
+	public void run() {
 		double kp = -1.5;
-		double error = this.getPosition() - position;
+		double error = this.getPosition() - setpoint;
 
-		System.out.println("setpoint: " + position);
+		System.out.println("setpoint: " + setpoint);
 		utilityArmMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 
 		double out = kp * error;
 
-		if (position < 0.0 && armLimitSwitch.get()) {
-			//this.zeroArm();
-			//out = 0.0;
-		}
 
 		utilityArmMotor.set(out);
 	}
