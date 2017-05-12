@@ -29,7 +29,7 @@ public class DriveStraightUntilGyroChangeCommand extends Command{
 	
 	protected void execute() {
 		
-		double p = -0.03;
+		double p = -0.04;
 		double error = SuperSystem.getInstance().drivetrain.getYaw() - this.angle;
 		SuperSystem.getInstance().drivetrain.tankDrive(speed + (p * error), speed - (p * error));
 		

@@ -6,6 +6,7 @@ import com.gryffingear.y2017.utilities.GryffinMath;
 import com.gryffingear.y2017.utilities.LedOutput;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SuperSystem {
 
@@ -182,6 +183,7 @@ public class SuperSystem {
 		feed.runAgitator(aOut);
 		feed.runFeeder(fOut);
 
+		SmartDashboard.putBoolean("hasGear", utilityarm.getBumpSwitch());
 		utilityarm.run();
 
 	}

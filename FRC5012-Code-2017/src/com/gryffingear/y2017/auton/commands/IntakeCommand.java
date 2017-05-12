@@ -10,29 +10,32 @@ public class IntakeCommand extends Command {
 	private double speed = 0.0;
 	private double timeout = 0.0;
 	
-	public IntakeCommand(double position, double speed) {
+	public IntakeCommand(double speed, double timeout) {
 		
-		this.position = position;
 		this.speed = speed;
+		this.timeout = timeout;
+		this.setTimeout(timeout);
 	}
 
 	protected void initialize() {
-		SuperSystem.getInstance().utilityarm.setPosition(position);
-		SuperSystem.getInstance().utilityarm.runIntake(speed);
+		
 	}
 
 	protected boolean isFinished() {
-		return true;
+		return this.isTimedOut();
 	}
 
 	protected void execute() {
+		SuperSystem.getInstance().utilityarm.runIntake(speed);
 
 	}
 
 	protected void end() {
+		SuperSystem.getInstance().utilityarm.runIntake(0);
 	}
 
 	protected void interrupted() {
+		SuperSystem.getInstance().utilityarm.runIntake(0);
 		
 	}
 }
