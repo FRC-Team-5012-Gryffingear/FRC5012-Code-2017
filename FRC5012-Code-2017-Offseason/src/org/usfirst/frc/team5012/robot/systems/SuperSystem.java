@@ -65,8 +65,22 @@ public class SuperSystem {
 		turning = turning * turning * turning;
 		// Scale turning because turns are too fast
 		turning *= 0.75;
-
 		
+		// "SmartTurn" logic - if driver is not commanding a turn, resist turning
+		boolean smartTurn = false;
+		
+		if(smartTurn) {
+			double kSt = .10;	// unit conversion for yaw-rate to turning units
+			double kP = 1.0;	// tuning constant, higher is more sensitive.
+			double input = drivetrain.getRawRate() * kSt;
+			
+			turning = kP * (turning - input);
+			
+		}
+		
+
+		drivetrain.tankDrive(throttle - turning, throttle + turning);
+
 		double cOut = 0;
 
 		if (climberIn) {
@@ -76,8 +90,7 @@ public class SuperSystem {
 		}
 
 		climb.set(-cOut);
-		drivetrain.tankDrive(throttle - turning, throttle + turning);
-
+		
 		//System.out.println("Pixycam Voltage: " + pixycam.getVoltage());
 
 		
