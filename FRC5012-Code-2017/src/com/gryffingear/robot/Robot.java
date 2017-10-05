@@ -43,10 +43,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 
-		CameraServer.getInstance().startAutomaticCapture("cam0", 0);
+		CameraServer.getInstance().startAutomaticCapture("cam0", 0).setFPS(8);
+		
 
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", new TestAuton());
+		//SmartDashboard.putData("Auto mode", new TestAuton());
 
 	}
 
@@ -61,16 +62,26 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().disable();
-		
 
-		//currAuton = new TestAuton();
-		currAuton = new CenterGearAuton();
+		System.out.println("Throttle Value: " + driverL.getRawAxis(2));
 		
-		SmartDashboard.putString("Currently Selected Auton", currAuton.toString());
 		bot.utilityarm.printPosition();
 
 		if (driverR.getRawButton(1)) {
 			bot.utilityarm.zeroArm();
+		}
+		
+		if(driverL.getRawAxis(2) > .2) {
+			System.out.println("Auton: DriveStraightAuton" );
+			currAuton = new DriveStraightAuton();
+		} else if (driverL.getRawAxis(2) < -.2) {
+			System.out.println("Auton: DriveStraightAuton" );
+			currAuton = new DriveStraightAuton();
+		} else if (driverL.getRawAxis(2) < .2 && driverL.getRawAxis(2) > -.2 ){
+			System.out.println("Auton: CenterGearAuton" );
+			currAuton = new CenterGearAuton();
+		} else {
+			currAuton = new DriveStraightAuton();
 		}
 
 	}
@@ -79,19 +90,21 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 
 		
-		System.out.println("Pot Value: " + pot.getAverageVoltage());
+		
 		cancelAuton();
 		
-//		if(pot.getAverageVoltage() > 1) {
-//			currAuton = new DriveStraightAuton();
-//		} else if (pot.getAverageVoltage() < 1) {
-//			currAuton = new CenterGearAuton();
-//		} else {
-//			
-//		}
-
-
-		currAuton = new CenterGearAuton();
+		
+		if(driverL.getRawAxis(2) > .2) {
+			System.out.println("Auton: DriveStraightAuton" );
+			currAuton = new DriveStraightAuton();
+		} else if (driverL.getRawAxis(2) < -.2) {
+			System.out.println("Auton: DriveStraightAuton" );
+			currAuton = new DriveStraightAuton();
+		} else if (driverL.getRawAxis(2) < .2 && driverL.getRawAxis(2) > -.2 ){
+			System.out.println("Auton: CenterGearAuton" );
+			currAuton = new CenterGearAuton();
+		} 
+		
 		Scheduler.getInstance().add(currAuton);
 		Scheduler.getInstance().enable();
 	}
