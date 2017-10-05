@@ -12,7 +12,7 @@ public class Pixy {
 	public double get() {
 		double answer = ((0) - in.getVoltage());
 		
-		//if(answer >= 3.25) answer = 3.3/2.0;
+		if(answer >= 3.25) answer = 3.3/2.0;
 		
 		return answer;
 		

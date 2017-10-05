@@ -71,11 +71,6 @@ public class Robot extends IterativeRobot {
 
 		System.out.println("Pixy: " + pixy.get());
 		
-		bot.utilityarm.printPosition();
-
-		if (driver.getRawButton(1)) {
-			bot.utilityarm.zeroArm();
-		}
 		
 		if(driver.getRawAxis(2) > .2) {
 			System.out.println("Auton: DriveStraightAuton" );
@@ -95,8 +90,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 
-		
-		
 		cancelAuton();
 //		
 //		
@@ -119,8 +112,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		
-		SuperSystem.getInstance().utilityarm.run();
 	}
 
 	@Override
@@ -137,9 +128,6 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		//System.out.println("Pov: " + gamepad.getPOV());
 		
-		SmartDashboard.putNumber("Pos: ", bot.utilityarm.getPosition());
-		
-
 //		bot.drive(driverL.getRawAxis(1), 
 //				  driverR.getRawAxis(1), 
 //				  driverL.getRawButton(2),
@@ -161,15 +149,7 @@ public class Robot extends IterativeRobot {
 		double throttle = driver.getRawAxis(3) - driver.getRawAxis(2);
 		double turning = driver.getRawAxis(0);
 		
-		throttle *= -1;
-		turning *= 1;
 		
-		if(Math.abs(turning) < .20) {
-		//	turning = 0;
-		}
-		
-		turning = turning * turning * turning;
-		turning *= 0.75;
 		
 //		bot.drive(gamepad.getRawAxis(1) * (turbo ? 1.0 : 1.5), 
 //				  gamepad.getRawAxis(5) * (turbo ? 1.0 : 1.5), 
@@ -177,19 +157,12 @@ public class Robot extends IterativeRobot {
 //				                            
 
 		
-		bot.drive((throttle - turning) * (turbo ? 1.0 : 1.5), 
-				  (throttle + turning) * (turbo ? 1.0 : 1.5), 
-				  driver.getRawButton(3),false);
+		bot.teleop(-throttle * (turbo ? 1.0 : 1.5), 
+				  turning * (turbo ? 1.0 : 1.5), 
+				  driver.getRawButton(3),
+				  operator.getRawAxis(3),
+				  operator.getRawButton(3));
 
-		
-		bot.operate(operator.getRawAxis(3), 
-					operator.getRawAxis(2), 
-					operator.getRawButton(8),
-					operator.getPOV(),
-					operator.getRawAxis(1),
-					operator.getRawButton(3));
-		
-		
 	}
 
 	@Override
@@ -202,7 +175,6 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void testPeriodic() {
-		bot.utilityarm.printPosition();
 	}
 
 	public void cancelAuton() {
