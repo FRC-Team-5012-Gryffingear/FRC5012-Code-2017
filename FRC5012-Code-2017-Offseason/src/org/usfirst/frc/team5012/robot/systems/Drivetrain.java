@@ -5,18 +5,29 @@ import org.usfirst.frc.team5012.robot.Constants;
 import com.ctre.CANTalon;
 import com.ctre.PigeonImu;
 
+/**
+ * Class that represents the drivetrain subsystem and associated sensors
+ * @author jgermita
+ *
+ */
 public class Drivetrain {
 
 	private CANTalon lefta = null;
 	private CANTalon leftb = null;
 
-
 	private CANTalon righta = null;
 	private CANTalon rightb = null;
-	
 
 	private PigeonImu imu = null;
 
+	/**
+	 * Constructor
+	 * @param la left A CAN ID
+	 * @param lb left B CAN ID
+	 * @param ra etc..
+	 * @param rb
+	 * @param gp Pigeon CAN ID
+	 */
 	public Drivetrain(int la, int lb, int ra, int rb, int gp) {
 
 		lefta = configureTalon(new CANTalon(la), CANTalon.TalonControlMode.PercentVbus, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
@@ -31,18 +42,25 @@ public class Drivetrain {
 		
 	}
 
+	/**
+	 * Basic left/right tankdrive method
+	 * @param leftv
+	 * @param rightv
+	 */
 	public void tankDrive(double leftv, double rightv) {
 
 		lefta.set(-leftv);
 		leftb.set(-leftv);
 	
-
 		righta.set(rightv);
 		rightb.set(rightv);
 
-
 	}
 
+	/**
+	 * Tank drive, except it takes a 2 element array as its input.
+	 * @param input
+	 */
 	public void tankDrive(double[] input) {
 
 		tankDrive(input[0], input[1]);
@@ -52,7 +70,12 @@ public class Drivetrain {
     private double old_wheel = 0.0;
     private double neg_inertia_accumulator = 0.0;
 
-	
+	/**
+	 * Cheesy drive / steering wheel drive method
+	 * @param wheel
+	 * @param throttle
+	 * @param quickTurn
+	 */
 	public void cheesyDrive(double wheel, double throttle, boolean quickTurn) {
         double left_pwm, right_pwm, overPower;
         double sensitivity = 1.2;
@@ -136,6 +159,10 @@ public class Drivetrain {
         tankDrive((left_pwm), (right_pwm));
     }
 
+	/**
+	 * Returns the yaw angle value from the pigeon
+	 * @return
+	 */
 	public double getYaw() {
 		double[] ypr = new double[3];
 		imu.GetYawPitchRoll(ypr);
@@ -143,6 +170,10 @@ public class Drivetrain {
 		return ypr[0];
 	}
 	
+	/**
+	 * gets the yaw RATE value from the pigeon
+	 * @return
+	 */
 	public double getRawRate() {
 		double[] xyz = new double[3];
 		imu.GetRawGyro(xyz);
@@ -151,11 +182,22 @@ public class Drivetrain {
 		
 	}
 
+	/**
+	 * Resets yaw value to 0
+	 */
 	public void resetGyro() {
 		imu.SetYaw(0);
 		
 	}
 
+	/**
+	 * Configures uninstantiated talons
+	 * @param in
+	 * @param mode
+	 * @param brakeState
+	 * @param rampRate
+	 * @return
+	 */
 	private CANTalon configureTalon(CANTalon in, CANTalon.TalonControlMode mode, boolean brakeState, double rampRate) {
 		in.changeControlMode(mode);
 		in.setVoltageRampRate(rampRate);

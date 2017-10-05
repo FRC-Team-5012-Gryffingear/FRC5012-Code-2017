@@ -79,7 +79,7 @@ public class SuperSystem {
 			cOut = 0;
 		}
 
-		climb.Climb(-cOut);
+		climb.set(-cOut);
 		drivetrain.tankDrive(throttle + turning, throttle - turning);
 		
 		
