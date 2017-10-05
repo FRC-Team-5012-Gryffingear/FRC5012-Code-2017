@@ -30,16 +30,16 @@ public class IntakeCommand extends Command {
 	}
 
 	protected void execute() {
-		SuperSystem.getInstance().utilityarm.set(speed);
+		SuperSystem.getInstance().intake.set(speed);
 
 	}
 
 	protected void end() {
-		SuperSystem.getInstance().utilityarm.set(0);
+		SuperSystem.getInstance().intake.set(0);
 	}
 
 	protected void interrupted() {
-		SuperSystem.getInstance().utilityarm.set(0);
+		SuperSystem.getInstance().intake.set(0);
 		
 	}
 }

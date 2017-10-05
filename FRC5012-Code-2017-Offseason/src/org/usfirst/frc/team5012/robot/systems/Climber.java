@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5012.robot.systems;
 
+import org.usfirst.frc.team5012.robot.Constants;
+
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -21,8 +23,8 @@ public class Climber {
 	 */
 	public Climber(int cma, int cmb) {
 
-		climberMotorA = configureTalon(new CANTalon(cma), CANTalon.TalonControlMode.PercentVbus, true, 0);
-		climberMotorB = configureTalon(new CANTalon(cmb), CANTalon.TalonControlMode.PercentVbus, true, 0);
+		climberMotorA = configureTalon(new CANTalon(cma), CANTalon.TalonControlMode.PercentVbus, true, Constants.RampRates.CLIMBER_RAMP_RATE);
+		climberMotorB = configureTalon(new CANTalon(cmb), CANTalon.TalonControlMode.PercentVbus, true, Constants.RampRates.CLIMBER_RAMP_RATE);
 
 	}
 

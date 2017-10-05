@@ -126,14 +126,8 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopPeriodic() {
-		//System.out.println("Pov: " + gamepad.getPOV());
 		
-//		bot.drive(driverL.getRawAxis(1), 
-//				  driverR.getRawAxis(1), 
-//				  driverL.getRawButton(2),
-//				  driverR.getRawButton(2));
-		
-		if(bot.utilityarm.getBumpSwitch()) {
+		if(bot.intake.getBumpSwitch()) {
 			rumstart = System.currentTimeMillis();
 		} 
 		
@@ -148,14 +142,6 @@ public class Robot extends IterativeRobot {
 		boolean turbo = driver.getRawButton(8);
 		double throttle = driver.getRawAxis(3) - driver.getRawAxis(2);
 		double turning = driver.getRawAxis(0);
-		
-		
-		
-//		bot.drive(gamepad.getRawAxis(1) * (turbo ? 1.0 : 1.5), 
-//				  gamepad.getRawAxis(5) * (turbo ? 1.0 : 1.5), 
-//				  gamepad.getRawButton(2),false);
-//				                            
-
 		
 		bot.teleop(-throttle * (turbo ? 1.0 : 1.5), 
 				  turning * (turbo ? 1.0 : 1.5), 

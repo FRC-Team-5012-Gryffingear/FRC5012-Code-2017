@@ -19,7 +19,7 @@ public class SuperSystem {
 	private static SuperSystem instance = null;
 	public Drivetrain drivetrain = null;
 
-	public Intake utilityarm = null;
+	public Intake intake = null;
 
 	public Compressor compressor = null;
 	public Climber climb = null;
@@ -36,13 +36,13 @@ public class SuperSystem {
 				Ports.Drivetrain.DRIVE_RIGHT_A_MOTOR, Ports.Drivetrain.DRIVE_RIGHT_B_MOTOR,
 				Ports.Drivetrain.DRIVE_GYRO_PORT);
 
-		utilityarm = new Intake(Ports.UtilityArm.INTAKE_MOTOR, Ports.UtilityArm.ARM_BUMP_SWITCH);
+		intake = new Intake(Ports.UtilityArm.INTAKE_MOTOR, Ports.UtilityArm.ARM_BUMP_SWITCH);
 
 		claw = new Claw(Ports.Claw.CLAW_PORT);
 
 		climb = new Climber(Ports.Climber.CLIMBER_MOTOR_A, Ports.Climber.CLIMBER_MOTOR_B);
 
-		pixycam = new Pixy(Ports.PixyCam.PixyCam);
+		pixycam = new Pixy(Ports.PixyCam.PIXY_PORT);
 
 		compressor = new Compressor();
 		compressor.start();
@@ -108,9 +108,9 @@ public class SuperSystem {
 			iOut = 0;
 		}
 
-		utilityarm.set(iOut);
+		intake.set(iOut);
 
-		SmartDashboard.putBoolean("hasGear", utilityarm.getBumpSwitch());
+		SmartDashboard.putBoolean("hasGear", intake.getBumpSwitch());
 	}
 
 	public static SuperSystem getInstance() {

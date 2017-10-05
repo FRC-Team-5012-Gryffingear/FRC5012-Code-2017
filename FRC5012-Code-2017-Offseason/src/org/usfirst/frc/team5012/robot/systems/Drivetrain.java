@@ -30,12 +30,12 @@ public class Drivetrain {
 	 */
 	public Drivetrain(int la, int lb, int ra, int rb, int gp) {
 
-		lefta = configureTalon(new CANTalon(la), CANTalon.TalonControlMode.PercentVbus, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
-		leftb = configureTalon(new CANTalon(lb), CANTalon.TalonControlMode.PercentVbus, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		lefta = configureTalon(new CANTalon(la), CANTalon.TalonControlMode.PercentVbus, false, Constants.RampRates.DRIVETRAIN_RAMP_RATE);
+		leftb = configureTalon(new CANTalon(lb), CANTalon.TalonControlMode.PercentVbus, false, Constants.RampRates.DRIVETRAIN_RAMP_RATE);
 		
 
-		righta = configureTalon(new CANTalon(ra), CANTalon.TalonControlMode.PercentVbus, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
-		rightb = configureTalon(new CANTalon(rb), CANTalon.TalonControlMode.PercentVbus, false, Constants.Drivetrain.DRIVETRAIN_RAMP_RATE);
+		righta = configureTalon(new CANTalon(ra), CANTalon.TalonControlMode.PercentVbus, false, Constants.RampRates.DRIVETRAIN_RAMP_RATE);
+		rightb = configureTalon(new CANTalon(rb), CANTalon.TalonControlMode.PercentVbus, false, Constants.RampRates.DRIVETRAIN_RAMP_RATE);
 		
 
 		imu = new PigeonImu(gp);

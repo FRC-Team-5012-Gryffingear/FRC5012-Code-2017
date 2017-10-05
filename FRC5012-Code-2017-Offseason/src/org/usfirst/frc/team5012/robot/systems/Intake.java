@@ -26,7 +26,7 @@ public class Intake {
      */
     public Intake(int im, int abs) {
 
-        intakeMotor = configureTalon(new CANTalon(im), CANTalon.TalonControlMode.PercentVbus, false, 0);
+        intakeMotor = configureTalon(new CANTalon(im), CANTalon.TalonControlMode.PercentVbus, false, Constants.RampRates.INTAKE_RAMP_RATE);
      
         bumpSwitch = new DigitalInput(abs);
 
