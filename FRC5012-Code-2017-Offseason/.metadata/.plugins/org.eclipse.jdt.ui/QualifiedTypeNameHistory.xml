@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="test.robot.Ports.Feeder"/>
+<fullyQualifiedTypeName name="test.robot.Ports.Drivetrain"/>
+<fullyQualifiedTypeName name="test.robot.Ports.UtilityArm"/>
+<fullyQualifiedTypeName name="com.ctre.PigeonImu"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.DigitalSource"/>
+<fullyQualifiedTypeName name="com.ctre.CANTalon"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.AnalogInput"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.command.CommandGroup"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.CameraServer"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.command.Scheduler"/>
+</qualifiedTypeNameHistroy>

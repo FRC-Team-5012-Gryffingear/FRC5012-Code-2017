@@ -1,0 +1,112 @@
+package test.robot;
+
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+
+/**
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the IterativeRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the manifest file in the resource
+ * directory.
+ */
+public class Robot extends IterativeRobot {
+	SuperSystem bot = SuperSystem.getInstance();
+	
+	Joystick driverL = new Joystick(Ports.Controls.DRIVER_LEFT_PORT);
+	Joystick driverR = new Joystick(Ports.Controls.DRIVER_RIGHT_PORT);
+	Joystick gamepad = new Joystick(Ports.Controls.OPERATOR_PORT);
+
+	AnalogInput pot = new AnalogInput(1);
+
+	private CommandGroup currAuton = null;
+
+
+	@Override
+	public void robotInit() {
+
+
+	}
+
+
+	@Override
+	public void disabledInit() {
+
+		cancelAuton();
+
+	}
+
+
+
+	@Override
+	public void autonomousPeriodic() {
+		Scheduler.getInstance().run();
+		
+		SuperSystem.getInstance().utilityarm.run();
+	}
+
+	@Override
+	public void teleopInit() {
+
+		cancelAuton();
+
+	}
+
+
+	@Override
+	public void teleopPeriodic() {
+		//System.out.println("Pov: " + gamepad.getPOV());
+		
+		SmartDashboard.putNumber("Pos: ", bot.utilityarm.getPosition());
+		SmartDashboard.putNumber("SetPoint: " , bot.utilityarm.getSetpoint());
+
+//		bot.drive(driverL.getRawAxis(1), 
+//				  driverR.getRawAxis(1), 
+//				  driverL.getRawButton(2));
+
+		boolean turbo = gamepad.getRawButton(8);                   //turbo button
+		bot.drive(gamepad.getRawAxis(1) * (turbo ? 1.0 : 0.5), 
+				  gamepad.getRawAxis(3) * (turbo ? 1.0 : 0.5), 
+				  gamepad.getRawButton(2));
+
+//		bot.operate(gamepad.getRawAxis(3), 
+//				    gamepad.getRawAxis(2), 
+//				    gamepad.getRawButton(7), 
+//				    gamepad.getRawButton(1),
+//					gamepad.getRawButton(8),
+//					gamepad.getPOV(),
+//					gamepad.getRawButton(9),
+//					gamepad.getRawAxis(1));
+	}
+
+	@Override
+	public void testInit() {
+
+		cancelAuton();
+
+	}
+
+
+	@Override
+	public void testPeriodic() {
+		bot.utilityarm.printPosition();
+	}
+
+	public void cancelAuton() {
+		if (currAuton != null) {
+			System.out.println("[STATUS] Auton was running at this time. Cancelling...");
+			currAuton.cancel();
+			currAuton = null;
+		}
+	}
+}
+
+	
+	
