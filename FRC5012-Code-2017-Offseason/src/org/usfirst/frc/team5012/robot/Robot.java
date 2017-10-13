@@ -49,7 +49,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 
-		CameraServer.getInstance().startAutomaticCapture("AnalogInput", 0).setFPS(15);       // previously 10 FPS //cam0
+		CameraServer.getInstance().startAutomaticCapture("cam0", 0).setFPS(15);       // previously 10 FPS //cam0
 		
 
 		// chooser.addObject("My Auto", new MyAutoCommand());
