@@ -50,4 +50,10 @@ public class Ports {
 		public static int CLAW_PORT = 0;
 		
 	}
+	public static class Hat {
+		
+		public static int HAT_MOTOR = 0;
+		
+	}
+	
 }

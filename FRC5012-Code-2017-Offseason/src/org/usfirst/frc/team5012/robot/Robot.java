@@ -147,7 +147,8 @@ public class Robot extends IterativeRobot {
 				  turning * (turbo ? 1.0 : 1.5), 
 				  driver.getRawButton(3),
 				  operator.getRawAxis(3),
-				  operator.getRawButton(3));
+				  operator.getRawButton(3),
+				  operator.getRawButton(9));
 
 	}
 

@@ -26,6 +26,7 @@ public class SuperSystem {
 	public Pixy pixycam = null;
 
 	public Claw claw = null;
+	public Hat hat = null;
 
 	/**
 	 * Constructor.
@@ -43,7 +44,9 @@ public class SuperSystem {
 		climb = new Climber(Ports.Climber.CLIMBER_MOTOR_A, Ports.Climber.CLIMBER_MOTOR_B);
 
 		pixycam = new Pixy(Ports.PixyCam.PIXY_PORT);
-
+		
+		hat = new Hat(Ports.Hat.HAT_MOTOR);
+		
 		compressor = new Compressor();
 		compressor.start();
 
@@ -52,7 +55,8 @@ public class SuperSystem {
 	public void teleop(double thr, double tur, 
 						boolean climberIn, 
 						double intakeInput,
-						boolean ClawInput) {
+						boolean ClawInput, 
+						boolean hatInput) {
 		
 		// DRIVER:	/////////////////////////////
 		double throttle = thr;
@@ -67,11 +71,11 @@ public class SuperSystem {
 		turning *= 0.75;
 		
 		// "SmartTurn" logic - if driver is not commanding a turn, resist turning
-		boolean smartTurn = false;
+		boolean smartTurn = true;
 		
 		if(smartTurn) {
-			double kSt = .10;	// unit conversion for yaw-rate to turning units
-			double kP = 1.0;	// tuning constant, higher is more sensitive.
+			double kSt = -0.00125;	// unit conversion for yaw-rate to turning units
+			double kP = 3.0;	// tuning constant, higher is more sensitive.
 			double input = drivetrain.getRawRate() * kSt;
 			
 			turning = kP * (turning - input);
@@ -107,8 +111,12 @@ public class SuperSystem {
 		} else {
 			iOut = 0;
 		}
+		
+		hat.set(hatInput ? 1.0 : 0.0);
 
 		intake.set(iOut);
+		
+		SmartDashboard.putNumber("yawRate", drivetrain.getRawRate());
 
 		SmartDashboard.putBoolean("hasGear", intake.getBumpSwitch());
 	}

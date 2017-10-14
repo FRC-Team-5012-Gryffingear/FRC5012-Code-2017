@@ -26,7 +26,7 @@ public class Hat {
      */
     public Hat(int im) {
 
-        HatMotor = configureTalon(new CANTalon(im), CANTalon.TalonControlMode.PercentVbus, false, Constants.RampRates.INTAKE_RAMP_RATE);
+        HatMotor = configureTalon(new CANTalon(im), CANTalon.TalonControlMode.PercentVbus, false, Constants.RampRates.HAT_RAMP_RATE);
      
         
 
@@ -37,7 +37,7 @@ public class Hat {
      * @param in throttle signalt to motor - -1.0 to 1.0
      */
     public void set(double in) {
-        HatMotor.set(in);
+        HatMotor.set(-in);
     }
     private CANTalon configureTalon(CANTalon in, CANTalon.TalonControlMode mode, boolean brakeState, double rampRate) {
         in.changeControlMode(mode);
