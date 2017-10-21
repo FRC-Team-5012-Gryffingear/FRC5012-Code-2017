@@ -4,6 +4,7 @@ package org.usfirst.frc.team5012.robot;
 
 import org.usfirst.frc.team5012.robot.auton.CenterGearAuton;
 import org.usfirst.frc.team5012.robot.auton.DriveStraightAuton;
+import org.usfirst.frc.team5012.robot.auton.TestAuton;
 import org.usfirst.frc.team5012.robot.systems.SuperSystem;
 import org.usfirst.frc.team5012.robot.util.Pixy;
 
@@ -17,7 +18,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -36,7 +36,6 @@ public class Robot extends IterativeRobot {
 	Joystick driver = new Joystick(Ports.Controls.DRIVER_PORT);
 	Joystick operator = new Joystick(Ports.Controls.OPERATOR_PORT);
 	
-	Pixy pixy = new Pixy(2);
 
 
 	AnalogInput pot = new AnalogInput(4);
@@ -69,7 +68,7 @@ public class Robot extends IterativeRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().disable();
 
-		System.out.println("Pixy: " + pixy.get());
+		
 		
 		
 		if(driver.getRawAxis(2) > .2) {
@@ -103,7 +102,7 @@ public class Robot extends IterativeRobot {
 //			System.out.println("Auton: CenterGearAuton" );
 //			currAuton = new CenterGearAuton();
 //		} 
-		currAuton = new CenterGearAuton();
+		currAuton = new TestAuton();
 		Scheduler.getInstance().add(currAuton);
 		Scheduler.getInstance().enable();
 	}
@@ -139,12 +138,12 @@ public class Robot extends IterativeRobot {
 			driver.setRumble(RumbleType.kLeftRumble, .0);
 		}
 
-		boolean turbo = driver.getRawButton(8);
+		boolean turbo = driver.getRawButton(6);
 		double throttle = driver.getRawAxis(3) - driver.getRawAxis(2);
 		double turning = driver.getRawAxis(0);
 		
-		bot.teleop(-throttle * (turbo ? 1.0 : 1.5), 
-				  turning * (turbo ? 1.0 : 1.5), 
+		bot.teleop(-throttle, 
+				  turning * (turbo ? 0.7 : 1.0), 
 				  driver.getRawButton(3),
 				  operator.getRawAxis(3),
 				  operator.getRawButton(3),

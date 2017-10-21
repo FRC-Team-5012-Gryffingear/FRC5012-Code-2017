@@ -5,13 +5,13 @@ import org.usfirst.frc.team5012.robot.systems.SuperSystem;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class DriveStraightCommand extends Command {
+public class GyroTurnCommand extends Command {
 
 	private double speed = 0.0;
 	private double angle = 0.0;
 	private double timeout = 0.0;
 	
-	public DriveStraightCommand(double speed, double angle, double timeout) {
+	public GyroTurnCommand(double speed, double angle, double timeout) {
 		
 		this.speed = -speed;
 		this.angle = angle;
@@ -29,11 +29,11 @@ public class DriveStraightCommand extends Command {
 	}
 	
 	protected void execute() {
-
-		double p = -0.025;
-		double error = 0; //SuperSystem.getInstance().drivetrain.getYaw() - this.angle;
-		SuperSystem.getInstance().drivetrain.tankDrive(speed + angle, speed - angle);
-
+		
+		double p = -0.01;
+		double error = SuperSystem.getInstance().drivetrain.getYaw() - this.angle;
+		SuperSystem.getInstance().drivetrain.tankDrive(speed + (p*error), speed - (p*error));
+		
 	}
 	
 	protected void end() {
