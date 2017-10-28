@@ -23,7 +23,9 @@ public class SuperSystem {
 
 	public Compressor compressor = null;
 	public Climber climb = null;
+	
 	public Pixy pixycam = null;
+	public GRIPVision vision = null;
 
 	public Claw claw = null;
 	public Hat hat = null;
@@ -44,6 +46,7 @@ public class SuperSystem {
 		climb = new Climber(Ports.Climber.CLIMBER_MOTOR_A, Ports.Climber.CLIMBER_MOTOR_B);
 
 		pixycam = new Pixy(Ports.PixyCam.PIXY_PORT, Ports.PixyCam.LED_PORT);
+		vision = GRIPVision.getInstance();
 		
 		hat = new Hat(Ports.Hat.HAT_MOTOR);
 		

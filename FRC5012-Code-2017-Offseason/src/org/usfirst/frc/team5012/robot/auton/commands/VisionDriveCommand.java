@@ -29,13 +29,16 @@ public class VisionDriveCommand extends Command {
 	protected void execute() {
 		
 		double p = -0.025;
-		double error = SuperSystem.getInstance().pixycam.get() - 1.65;
+//		double error = SuperSystem.getInstance().pixycam.get() - 1.65;
+//		
+//		if(error > 0.05 || error < 3.25) {
+//			error = 0;
+//			// Zero out error if it's unacceptibly high. 
+//			// Assume the previous step will get the robot to kinda-sorta the right place
+//		}
 		
-		if(error > 0.05 || error < 3.25) {
-			error = 0;
-			// Zero out error if it's unacceptibly high. 
-			// Assume the previous step will get the robot to kinda-sorta the right place
-		}
+		double error = SuperSystem.getInstance().vision.getX();
+		
 		double turning = p * error;
 		SuperSystem.getInstance().drivetrain.tankDrive(throttle + turning, throttle - turning);
 		
