@@ -17,7 +17,7 @@ public class GRIPVision implements PIDSource {
 	double area = 0;
 	
 	double min = 0;
-	double max = 320;
+	double max = 640;
 
 	private GRIPVision() {
 
@@ -61,6 +61,7 @@ public class GRIPVision implements PIDSource {
 				
 				// Average the two targets' x positions to find their centers.
 				x = ((cx[0] + cx[1]) / 2) - (max / 2);
+				x -= 80;
 			} else {
 				x = 0;
 			}

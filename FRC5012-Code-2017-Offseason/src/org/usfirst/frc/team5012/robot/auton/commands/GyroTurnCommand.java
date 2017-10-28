@@ -14,11 +14,13 @@ public class GyroTurnCommand extends Command {
 	public GyroTurnCommand(double speed, double angle, double timeout) {
 		
 		this.speed = -speed;
-		this.angle = angle;
+		this.angle = -angle;
 		this.timeout = timeout;
 		this.setTimeout(timeout);
 		
 	}
+	
+	
 	
 	protected void initialize() {
 		SuperSystem.getInstance().drivetrain.resetGyro();
@@ -37,7 +39,8 @@ public class GyroTurnCommand extends Command {
 	}
 	
 	protected void end() {
-		
+
+		SuperSystem.getInstance().drivetrain.tankDrive(0.0, 0.0);
 	}
 	
 	protected void interrupted() {

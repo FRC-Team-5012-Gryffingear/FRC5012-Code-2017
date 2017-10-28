@@ -27,8 +27,7 @@ public class VisionDriveCommand extends Command {
 	}
 	
 	protected void execute() {
-		
-		double p = -0.025;
+		double p = -0.0010;
 //		double error = SuperSystem.getInstance().pixycam.get() - 1.65;
 //		
 //		if(error > 0.05 || error < 3.25) {

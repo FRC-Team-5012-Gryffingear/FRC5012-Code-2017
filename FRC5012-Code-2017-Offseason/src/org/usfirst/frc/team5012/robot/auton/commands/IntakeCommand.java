@@ -35,11 +35,9 @@ public class IntakeCommand extends Command {
 	}
 
 	protected void end() {
-		SuperSystem.getInstance().intake.set(0);
 	}
 
 	protected void interrupted() {
-		SuperSystem.getInstance().intake.set(0);
 		
 	}
 }

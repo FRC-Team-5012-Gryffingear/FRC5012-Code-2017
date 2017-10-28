@@ -119,12 +119,16 @@ public class SuperSystem {
 
 		intake.set(iOut);
 		
-		pixycam.set(true);
+		//pixycam.set(true);
+		
+		//vision.update();
 		
 		SmartDashboard.putNumber("yawRate", drivetrain.getRawRate());
 
 		SmartDashboard.putBoolean("hasGear", intake.getBumpSwitch());
 		SmartDashboard.putNumber("pixy", pixycam.get());
+		
+		SmartDashboard.putNumber("VisionX", vision.getX());
 	}
 
 	public static SuperSystem getInstance() {

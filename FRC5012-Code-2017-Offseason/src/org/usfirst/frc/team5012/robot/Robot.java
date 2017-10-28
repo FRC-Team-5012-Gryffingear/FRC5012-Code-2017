@@ -2,9 +2,7 @@ package org.usfirst.frc.team5012.robot;
 
 
 
-import org.usfirst.frc.team5012.robot.auton.CenterGearAuton;
-import org.usfirst.frc.team5012.robot.auton.DriveStraightAuton;
-import org.usfirst.frc.team5012.robot.auton.TestAuton;
+import org.usfirst.frc.team5012.robot.auton.SidePegAuton;
 import org.usfirst.frc.team5012.robot.systems.SuperSystem;
 
 import edu.wpi.cscore.UsbCamera;
@@ -43,14 +41,15 @@ public class Robot extends IterativeRobot {
 	BuiltInAccelerometer accel = new BuiltInAccelerometer();
 
 	private CommandGroup currAuton = null;
-
+	UsbCamera cam;
 
 	@Override
 	public void robotInit() {
-		UsbCamera cam = CameraServer.getInstance().startAutomaticCapture("cam0", 0);
+		cam = CameraServer.getInstance().startAutomaticCapture("cam0", 0);
 		
 		cam.setFPS(15);       // previously 10 FPS //cam0
 		cam.setExposureManual(15);
+
 
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		//SmartDashboard.putData("Auto mode", new TestAuton());
@@ -63,6 +62,7 @@ public class Robot extends IterativeRobot {
 
 		cancelAuton();
 
+		cam.setExposureManual(15);
 	}
 
 	@Override
@@ -70,26 +70,27 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().disable();
 
 		
-		
-		
-		if(driver.getRawAxis(2) > .2) {
-			System.out.println("Auton: DriveStraightAuton" );
-			currAuton = new DriveStraightAuton();
-		} else if (driver.getRawAxis(2) < -.2) {
-			System.out.println("Auton: DriveStraightAuton" );
-			currAuton = new DriveStraightAuton();
-		} else if (driver.getRawAxis(2) < .2 && driver.getRawAxis(2) > -.2 ){
-			System.out.println("Auton: CenterGearAuton" );
-			currAuton = new CenterGearAuton();
-		} else {
-			currAuton = new DriveStraightAuton();
-		}
+//		
+//		
+//		if(driver.getRawAxis(2) > .2) {
+//			System.out.println("Auton: DriveStraightAuton" );
+//			currAuton = new DriveStraightAuton();
+//		} else if (driver.getRawAxis(2) < -.2) {
+//			System.out.println("Auton: DriveStraightAuton" );
+//			currAuton = new DriveStraightAuton();
+//		} else if (driver.getRawAxis(2) < .2 && driver.getRawAxis(2) > -.2 ){
+//			System.out.println("Auton: CenterGearAuton" );
+//			currAuton = new CenterGearAuton();
+//		} else {
+//			currAuton = new DriveStraightAuton();
+//		}
 
 	}
 
 	@Override
 	public void autonomousInit() {
 
+		cam.setExposureManual(15);
 		cancelAuton();
 //		
 //		
@@ -103,7 +104,7 @@ public class Robot extends IterativeRobot {
 //			System.out.println("Auton: CenterGearAuton" );
 //			currAuton = new CenterGearAuton();
 //		} 
-		currAuton = new TestAuton();
+		currAuton = new SidePegAuton();
 		Scheduler.getInstance().add(currAuton);
 		Scheduler.getInstance().enable();
 	}
@@ -112,13 +113,16 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+
+		SuperSystem.getInstance().pixycam.set(true);
+		SuperSystem.getInstance().vision.update();
 	}
 
 	@Override
 	public void teleopInit() {
 
 		cancelAuton();
-
+		cam.setExposureManual(40);
 	}
 	
 	long rumstart = 0;
@@ -134,7 +138,9 @@ public class Robot extends IterativeRobot {
 		if(System.currentTimeMillis() - rumstart < 1000) {
 			driver.setRumble(RumbleType.kRightRumble, 1.0);
 			driver.setRumble(RumbleType.kLeftRumble, 1.0);
+			SuperSystem.getInstance().pixycam.set(true);
 		} else {
+			SuperSystem.getInstance().pixycam.set(false);
 			driver.setRumble(RumbleType.kRightRumble, .0);
 			driver.setRumble(RumbleType.kLeftRumble, .0);
 		}
