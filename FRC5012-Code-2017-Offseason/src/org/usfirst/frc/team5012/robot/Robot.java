@@ -6,8 +6,8 @@ import org.usfirst.frc.team5012.robot.auton.CenterGearAuton;
 import org.usfirst.frc.team5012.robot.auton.DriveStraightAuton;
 import org.usfirst.frc.team5012.robot.auton.TestAuton;
 import org.usfirst.frc.team5012.robot.systems.SuperSystem;
-import org.usfirst.frc.team5012.robot.util.Pixy;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -47,9 +47,10 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void robotInit() {
-
-		CameraServer.getInstance().startAutomaticCapture("cam0", 0).setFPS(15);       // previously 10 FPS //cam0
+		UsbCamera cam = CameraServer.getInstance().startAutomaticCapture("cam0", 0);
 		
+		cam.setFPS(15);       // previously 10 FPS //cam0
+		cam.setExposureManual(15);
 
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		//SmartDashboard.putData("Auto mode", new TestAuton());

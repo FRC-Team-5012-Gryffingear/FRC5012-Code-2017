@@ -78,7 +78,7 @@ public class SuperSystem {
 		
 		if(smartTurn) {
 			double kSt = -0.00125;	// unit conversion for yaw-rate to turning units
-			double kP = 2.50;	// tuning constant, higher is more sensitive.
+			double kP = 1.750;	// tuning constant, higher is more sensitive.
 			double input = drivetrain.getRawRate() * kSt;
 			
 			turning = kP * (turning - input);
