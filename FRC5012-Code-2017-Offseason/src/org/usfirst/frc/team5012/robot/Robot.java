@@ -2,7 +2,10 @@ package org.usfirst.frc.team5012.robot;
 
 
 
+import org.usfirst.frc.team5012.robot.auton.CenterGearAuton;
+import org.usfirst.frc.team5012.robot.auton.DriveStraightAuton;
 import org.usfirst.frc.team5012.robot.auton.SidePegAuton;
+import org.usfirst.frc.team5012.robot.auton.commands.WaitCommand;
 import org.usfirst.frc.team5012.robot.systems.SuperSystem;
 
 import edu.wpi.cscore.UsbCamera;
@@ -36,7 +39,9 @@ public class Robot extends IterativeRobot {
 	
 
 
-	AnalogInput pot = new AnalogInput(4);
+	AnalogInput modePot = new AnalogInput(0);
+	AnalogInput timePot = new AnalogInput(1);
+	
 	
 	BuiltInAccelerometer accel = new BuiltInAccelerometer();
 
@@ -69,22 +74,8 @@ public class Robot extends IterativeRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().disable();
 
-		
-//		
-//		
-//		if(driver.getRawAxis(2) > .2) {
-//			System.out.println("Auton: DriveStraightAuton" );
-//			currAuton = new DriveStraightAuton();
-//		} else if (driver.getRawAxis(2) < -.2) {
-//			System.out.println("Auton: DriveStraightAuton" );
-//			currAuton = new DriveStraightAuton();
-//		} else if (driver.getRawAxis(2) < .2 && driver.getRawAxis(2) > -.2 ){
-//			System.out.println("Auton: CenterGearAuton" );
-//			currAuton = new CenterGearAuton();
-//		} else {
-//			currAuton = new DriveStraightAuton();
-//		}
-
+		SmartDashboard.putNumber("AutoMode", modePot.getAverageVoltage());
+		SmartDashboard.putNumber("AutoDelay", timePot.getAverageVoltage());
 	}
 
 	@Override
@@ -104,7 +95,30 @@ public class Robot extends IterativeRobot {
 //			System.out.println("Auton: CenterGearAuton" );
 //			currAuton = new CenterGearAuton();
 //		} 
-		currAuton = new SidePegAuton();
+		;
+		
+		
+		if(modePot.getAverageVoltage() > 0 && modePot.getAverageVoltage() < 1.5) {
+			
+			currAuton = new SidePegAuton(1);
+			
+		} else if (modePot.getAverageVoltage() > 1.5 && modePot.getAverageVoltage() < 3.5) {
+			
+			currAuton = new CenterGearAuton();
+			
+		} else if (modePot.getAverageVoltage() > 3.5 && modePot.getAverageVoltage() < 4.5) {
+			
+			currAuton = new SidePegAuton(-1);
+			
+		} else if (modePot.getAverageVoltage() > 4.5 && modePot.getAverageVoltage() < 5.0) {
+			
+			currAuton = new DriveStraightAuton();
+			
+		}
+		
+		double delay = Math.max(0, (timePot.getAverageVoltage()-1.0));
+		Scheduler.getInstance().add(new WaitCommand(delay));
+		
 		Scheduler.getInstance().add(currAuton);
 		Scheduler.getInstance().enable();
 	}
@@ -121,6 +135,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 
+		
 		cancelAuton();
 		cam.setExposureManual(40);
 	}
@@ -130,7 +145,9 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopPeriodic() {
+		//SuperSystem.getInstance().pixycam.set(true);
 		
+		boolean lightOut = false;
 		if(bot.intake.getBumpSwitch()) {
 			rumstart = System.currentTimeMillis();
 		} 
@@ -138,12 +155,15 @@ public class Robot extends IterativeRobot {
 		if(System.currentTimeMillis() - rumstart < 1000) {
 			driver.setRumble(RumbleType.kRightRumble, 1.0);
 			driver.setRumble(RumbleType.kLeftRumble, 1.0);
-			SuperSystem.getInstance().pixycam.set(true);
+			//SuperSystem.getInstance().pixycam.set(true);
+			lightOut = true;
 		} else {
-			SuperSystem.getInstance().pixycam.set(false);
+			//SuperSystem.getInstance().pixycam.set(false);
 			driver.setRumble(RumbleType.kRightRumble, .0);
 			driver.setRumble(RumbleType.kLeftRumble, .0);
 		}
+		
+		SuperSystem.getInstance().pixycam.set(lightOut || operator.getRawButton(2));
 
 		boolean turbo = driver.getRawButton(6);
 		double throttle = driver.getRawAxis(3) - driver.getRawAxis(2);
@@ -154,7 +174,7 @@ public class Robot extends IterativeRobot {
 				  driver.getRawButton(3),
 				  operator.getRawAxis(3),
 				  operator.getRawButton(3),
-				  operator.getRawButton(9));
+				  operator.getRawButton(9), !driver.getRawButton(4));
 
 	}
 
@@ -168,6 +188,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void testPeriodic() {
+		SuperSystem.getInstance().pixycam.set(true);
 	}
 
 	public void cancelAuton() {

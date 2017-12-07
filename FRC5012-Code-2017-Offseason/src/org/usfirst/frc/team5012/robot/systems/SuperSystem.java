@@ -59,7 +59,7 @@ public class SuperSystem {
 						boolean climberIn, 
 						double intakeInput,
 						boolean ClawInput, 
-						boolean hatInput) {
+						boolean hatInput, boolean st) {
 		
 		// DRIVER:	/////////////////////////////
 		double throttle = thr;
@@ -74,7 +74,7 @@ public class SuperSystem {
 		turning *= 0.75;
 		
 		// "SmartTurn" logic - if driver is not commanding a turn, resist turning
-		boolean smartTurn = true;
+		boolean smartTurn = st;
 		
 		if(smartTurn) {
 			double kSt = -0.00125;	// unit conversion for yaw-rate to turning units

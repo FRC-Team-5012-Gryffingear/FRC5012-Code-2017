@@ -26,16 +26,16 @@ public class IntakeCommand extends Command {
 	}
 
 	protected void execute() {
-		SuperSystem.getInstance().utilityarm.runIntake(speed);
+	
 
 	}
 
 	protected void end() {
-		SuperSystem.getInstance().utilityarm.runIntake(0);
+
 	}
 
 	protected void interrupted() {
-		SuperSystem.getInstance().utilityarm.runIntake(0);
+		
 		
 	}
 }

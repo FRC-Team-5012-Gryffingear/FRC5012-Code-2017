@@ -26,18 +26,18 @@ public class setArmPositionCommand extends Command{
 		return this.isTimedOut();
 	}
 
-	protected void execute() {
-		SuperSystem.getInstance().utilityarm.setPosition(armPosition);
+	protected void execute() {}
+		
 
-	}
+	
 
 	protected void end() {
 
-		SuperSystem.getInstance().utilityarm.setPercentV(0);
+		
 	}
 
 	protected void interrupted() {
-		SuperSystem.getInstance().utilityarm.setPercentV(0);
+		
 	}
 
 

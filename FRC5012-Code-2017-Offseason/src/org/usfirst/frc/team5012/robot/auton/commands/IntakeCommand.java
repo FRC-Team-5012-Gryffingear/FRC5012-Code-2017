@@ -14,11 +14,10 @@ public class IntakeCommand extends Command {
 	private double speed = 0.0;
 	private double timeout = 0.0;
 	
-	public IntakeCommand(double speed, double timeout) {
+	public IntakeCommand(double speed) {
 		
 		this.speed = speed;
 		this.timeout = timeout;
-		this.setTimeout(timeout);
 	}
 
 	protected void initialize() {
@@ -26,7 +25,7 @@ public class IntakeCommand extends Command {
 	}
 
 	protected boolean isFinished() {
-		return this.isTimedOut();
+		return true;
 	}
 
 	protected void execute() {

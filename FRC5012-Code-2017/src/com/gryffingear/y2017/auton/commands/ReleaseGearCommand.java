@@ -27,19 +27,16 @@ public class ReleaseGearCommand extends Command{
 		return this.isTimedOut();
 	}
 
-	protected void execute() {
+	protected void execute() {}
 		
-		SuperSystem.getInstance().utilityarm.setPosition(armPosition);
-		SuperSystem.getInstance().utilityarm.runIntake(intakeSpeed);
-
-	}
+	
 
 	protected void end() {
-		SuperSystem.getInstance().utilityarm.setPercentV(0);
+
 	}
 
 	protected void interrupted() {
-		SuperSystem.getInstance().utilityarm.setPercentV(0);
+
 	}
 
 }

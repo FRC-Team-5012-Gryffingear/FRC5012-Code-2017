@@ -4,7 +4,7 @@ public class Constants {
 
 	public static class RampRates {
 
-		public static int DRIVETRAIN_RAMP_RATE = 36;   //edit purposes , original value was " 48 "
+		public static int DRIVETRAIN_RAMP_RATE = 28;   //edit purposes , original value was " 48 "
 		public static int INTAKE_RAMP_RATE = 64;
 		public static int HAT_RAMP_RATE = 72;
 		public static int CLIMBER_RAMP_RATE = 64;

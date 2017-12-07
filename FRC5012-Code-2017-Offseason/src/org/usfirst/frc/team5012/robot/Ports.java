@@ -42,7 +42,7 @@ public class Ports {
 	}
 	public static class PixyCam {
 		
-		public static int PIXY_PORT = 0;
+		public static int PIXY_PORT = 3;
 		public static int LED_PORT = 7;
 		
 	}

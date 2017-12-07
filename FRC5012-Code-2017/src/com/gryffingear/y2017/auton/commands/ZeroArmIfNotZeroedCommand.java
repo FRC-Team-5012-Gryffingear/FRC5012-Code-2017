@@ -17,7 +17,7 @@ public class ZeroArmIfNotZeroedCommand extends Command {
 	}
 	
 	protected void initialize() {
-			SuperSystem.getInstance().utilityarm.setPercentV(-0.4);
+		
 	}
 	
 	protected boolean isFinished() {
@@ -29,12 +29,11 @@ public class ZeroArmIfNotZeroedCommand extends Command {
 	}
 	
 	protected void end() {
-		SuperSystem.getInstance().utilityarm.setPercentV(0);
-			SuperSystem.getInstance().utilityarm.zeroArm();;
+	
 	}
 	
 	protected void interrupted() {
-		SuperSystem.getInstance().utilityarm.setPercentV(0);
+
 	}
 	
 	

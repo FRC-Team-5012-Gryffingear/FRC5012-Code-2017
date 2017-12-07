@@ -65,10 +65,10 @@ public class Robot extends IterativeRobot {
 
 		System.out.println("Throttle Value: " + driverL.getRawAxis(2));
 		
-		bot.utilityarm.printPosition();
+	
 
 		if (driverR.getRawButton(1)) {
-			bot.utilityarm.zeroArm();
+		
 		}
 		
 		if(driverL.getRawAxis(2) > .2) {
@@ -114,7 +114,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		
-		SuperSystem.getInstance().utilityarm.run();
+
 	}
 
 	@Override
@@ -129,15 +129,14 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		//System.out.println("Pov: " + gamepad.getPOV());
 		
-		SmartDashboard.putNumber("Pos: ", bot.utilityarm.getPosition());
-		SmartDashboard.putNumber("SetPoint: " , bot.utilityarm.getSetpoint());
+		
 
 		bot.drive(driverL.getRawAxis(1), 
 				  driverR.getRawAxis(1), 
-				  driverL.getRawButton(2));
+				  gamepad.getRawButton(8));
 
 		bot.operate(gamepad.getRawAxis(3), 
-					gamepad.getRawAxis(2), 
+					gamepad.getRawAxis(5), 
 					gamepad.getRawButton(7), 
 					gamepad.getRawButton(1),
 					gamepad.getRawButton(8),
@@ -156,7 +155,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void testPeriodic() {
-		bot.utilityarm.printPosition();
+	
 	}
 
 	public void cancelAuton() {

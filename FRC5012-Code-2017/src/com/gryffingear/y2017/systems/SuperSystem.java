@@ -13,7 +13,7 @@ public class SuperSystem {
 	private static SuperSystem instance = null;
 	public Drivetrain drivetrain = null;
 	public Shooter shoot = null;
-	public UtilityArm utilityarm = null;
+	
 	// public GRIPVision vision = null;
 	public Feeder feed = null;
 	public Compressor compressor = null;
@@ -34,8 +34,8 @@ public class SuperSystem {
 
 		shoot = new Shooter(Ports.Shooter.SHOOTER_MOTOR, Ports.Shooter.PRESHOOTER_MOTOR);
 
-		utilityarm = new UtilityArm(Ports.UtilityArm.INTAKE_MOTOR, Ports.UtilityArm.ARM_MOTOR,
-				Ports.UtilityArm.ARM_ENCODER, Ports.UtilityArm.ARM_BUMP_SWITCH, Ports.UtilityArm.ARM_LIMIT_SWITCH);
+	
+				
 		//
 		// vision = GRIPVision.getInstance();
 		// visionOut = new GryffinPIDOutput();
@@ -152,7 +152,7 @@ public class SuperSystem {
 
 		}
 
-		if (utilityarm.getBumpSwitch()) {
+	 {
 			if (iOut > 0) {
 				iOut = 0;
 			}
@@ -164,27 +164,23 @@ public class SuperSystem {
 			ARM_LED_C.blink(200);
 		} else {
 
-			boolean ledOut = utilityarm.getBumpSwitch();
+		
 
-			ARM_LED_A.set(ledOut);
-			ARM_LED_B.set(ledOut);
-			ARM_LED_C.set(ledOut);
-
+		
 		}
 
-		utilityarm.runIntake(iOut);
+		
 		// utilityarm.setPercentV(uaOut);
-		utilityarm.printPosition();
+	
 
-		utilityarm.setPosition(uaP + .365 * nudgeInput);
+
 
 		shoot.runShooter(sOut, psOut);
 
 		feed.runAgitator(aOut);
 		feed.runFeeder(fOut);
 
-		SmartDashboard.putBoolean("hasGear", utilityarm.getBumpSwitch());
-		utilityarm.run();
+	
 
 	}
 
